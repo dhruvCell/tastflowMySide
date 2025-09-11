@@ -153,6 +153,11 @@ const forgotPassword = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // Check if user is registered via Google login
+        if (user.googleId) {
+            return res.status(400).json({ message: 'This account is registered via Google login. Please use Google login to access your account.' });
+        }
+
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const now = new Date();
         const expiryDate = new Date(now.getTime() + 60000);
@@ -200,6 +205,11 @@ const verifyOtp = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // Check if user is registered via Google login
+        if (user.googleId) {
+            return res.status(400).json({ message: 'This account is registered via Google login. Please use Google login to access your account.' });
+        }
+
         if (user.otp !== otp) {
             return res.status(400).json({ message: 'Invalid OTP' });
         }
@@ -229,6 +239,11 @@ const resetPassword = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if user is registered via Google login
+        if (user.googleId) {
+            return res.status(400).json({ message: 'This account is registered via Google login. Please use Google login to access your account.' });
         }
 
         if (user.otp !== otp || user.otpExpiry < Date.now()) {

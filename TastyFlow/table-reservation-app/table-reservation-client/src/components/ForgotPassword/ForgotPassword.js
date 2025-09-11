@@ -34,7 +34,12 @@ function ForgotPassword(props) {
     } catch (error) {
       console.error(error);
       props.showAlert(null, null);
-      props.showAlert('Server error', 'error');
+      // Handle specific error responses
+      if (error.response && error.response.data && error.response.data.message) {
+        props.showAlert(error.response.data.message, 'error');
+      } else {
+        props.showAlert('Server error', 'error');
+      }
     }
   };
 
