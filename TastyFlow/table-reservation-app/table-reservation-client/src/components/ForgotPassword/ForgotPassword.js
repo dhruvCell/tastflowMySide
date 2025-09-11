@@ -16,8 +16,7 @@ function ForgotPassword(props) {
       return;
     }
 
-    props.showAlert('Sending OTP...', 'info');
-
+    // Remove sending OTP notification if Google login notification occurs
     try {
       const response = await axios.post('http://localhost:5000/api/users/forgot-password', { email });
 
