@@ -102,7 +102,24 @@ const Login = (props) => {
             </div>
             
             <button type="submit" className="lgn-submit-btn">Sign In</button>
-            
+
+            <div className="lgn-divider">
+              <span>or</span>
+            </div>
+
+            <button
+              type="button"
+              className="lgn-google-btn"
+              onClick={() => window.location.href = 'http://localhost:5000/api/users/auth/google'}
+            >
+              <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google"
+                className="lgn-google-icon"
+              />
+              Continue with Google
+            </button>
+
             <div className="lgn-signup-link">
               Don't have an account? <Link to="/signup" className="lgn-signup-link-text">Sign up</Link>
             </div>

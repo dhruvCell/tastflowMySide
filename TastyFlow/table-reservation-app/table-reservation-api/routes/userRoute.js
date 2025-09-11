@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, getAllUsers, getUserId, addFoodToUser, sendInvoice } = require('../controllers/userController');
+const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, getAllUsers, getUserId, addFoodToUser, sendInvoice, googleAuth } = require('../controllers/userController');
 const fetchUser = require('../middleware/fetchUser');
+const passport = require('passport');
 
 // Create a User
 router.post(
@@ -50,6 +51,16 @@ router.post("/admin/create-user", [
 ],
   createUser); 
 
-  router.post('/send-invoice/:invoiceId', sendInvoice)
+router.post('/send-invoice/:invoiceId', sendInvoice);
+
+// Google OAuth routes
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  googleAuth
+);
 
 module.exports = router;

@@ -10,6 +10,23 @@ const PDFDocument = require('pdfkit');
 const { toWords } = require('number-to-words');
 const JWT_SECTRET = 'dhruvdhruvdhruv';
 
+// Google OAuth login handler
+const googleAuth = async (req, res) => {
+    try {
+        const user = req.user; // User from Passport
+        const data = {
+            user: {
+                id: user.id,
+            }
+        };
+        const authtoken = jwt.sign(data, JWT_SECTRET);
+        res.redirect(`http://localhost:3000/auth/callback?token=${authtoken}`);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server Error");
+    }
+};
+
 // Create a User
 const createUser = async (req, res) => {
     let success = false;
@@ -62,6 +79,19 @@ const loginUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
+
+        // Check if user was created via OAuth (has googleId but no password)
+        if (user.googleId && !user.password) {
+            return res.status(400).json({
+                error: "This account was created using Google login. Please use 'Continue with Google' to sign in."
+            });
+        }
+
+        // Check if user has a password (for regular registration)
+        if (!user.password) {
+            return res.status(400).json({ error: "Please try to login with correct credentials" });
+        }
+
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
             return res.status(400).json({ error: "Please try to login with correct credentials" });
@@ -536,4 +566,5 @@ module.exports = {
     getUserId,
     addFoodToUser,
     sendInvoice,
+    googleAuth,
 };

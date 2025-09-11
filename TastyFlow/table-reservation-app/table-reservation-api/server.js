@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
 const slotRoutes = require('./routes/slotRoutes');
 const userRoutes = require('./routes/userRoute');
 const foodRoute = require("./routes/foodRoute");
 const messageRoutes = require("./routes/messageRoutes");
 const invoiceRoutes = require("./routes/InvoiceRoute");
 require('dotenv').config();
+require('./passportConfig'); // Import Passport configuration
 const app = express();
 const PORT = process.env.PORT || 5000;
 const http = require('http');
@@ -18,6 +21,17 @@ app.use(cors({
   methods: ['GET', 'POST', 'DELETE', 'PUT']
 }));
 app.use(express.json());
+
+// Session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 const mongoUrl = "mongodb://127.0.0.1:27017/register?directConnection=true&serverSelectionTimeoutMS=5000&appName=mongosh+2.0.1";
 

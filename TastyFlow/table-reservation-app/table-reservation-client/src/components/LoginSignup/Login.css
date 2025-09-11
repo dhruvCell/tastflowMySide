@@ -189,7 +189,58 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(255, 65, 53, 0.3);
   }
-  
+
+  .lgn-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  .lgn-divider::before,
+  .lgn-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--lgn-input-border);
+  }
+
+  .lgn-divider span {
+    padding: 0 1rem;
+    color: var(--lgn-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .lgn-google-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--lgn-text-primary);
+    color: var(--lgn-primary-bg);
+    border: 1px solid var(--lgn-input-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lgn-google-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #dadce0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .lgn-google-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .lgn-signup-link {
     text-align: center;
     font-size: 0.9rem;

@@ -4,6 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import UserPanel from './components/UserPanel/UserPanel';
 import Login from './components/LoginSignup/Login';
+import OAuthCallback from './components/LoginSignup/OAuthCallback';
 import Alert from './components/Alert/Alert';
 import Navbar from './components/Navbar/Navbar';
 import Info from './components/Info/Info';
@@ -121,6 +122,7 @@ function App() {
         <Alert alert={alert} />
         <Routes>
           <Route path="/login" element={<Login showAlert={showAlert} />} />
+          <Route path="/auth/callback" element={<OAuthCallback showAlert={showAlert} />} />
           <Route path="/" element={<UserPanel showAlert={showAlert} />} />
           <Route path="/signup" element={<Signup showAlert={showAlert} />} />
           <Route path="/info" element={<PrivateRoute element={<Info showAlert={showAlert} />} />} />
