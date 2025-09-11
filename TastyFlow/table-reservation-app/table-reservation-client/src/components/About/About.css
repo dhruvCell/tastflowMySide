@@ -1,0 +1,596 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    box-sizing: border-box;
+}
+
+/* About section one */
+.AboutSectionOne {
+    background-color: #1b1c1f;
+}
+
+.AboutSectionOneLeft h1 {
+    font-size: 3rem;
+    margin: 10px 0;
+    font-weight: bold;
+    font-family: "Inter", serif;
+    color: #fff;
+}
+
+.AboutSectionOneLeft p {
+    max-width: 565px;
+    color: #fff;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.hero-button {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    font-size: 1rem;
+    border-radius: 50px;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .AboutSectionOneLeft h1 {
+        font-size: 2.5rem;
+    }
+
+    .AboutSectionOneLeft p {
+        font-size: 16px;
+    }
+
+    .hero-button {
+        padding: 0.8rem 2rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .AboutSectionOneLeft h1 {
+        font-size: 2rem;
+    }
+
+    .AboutSectionOneLeft p {
+        font-size: 14px;
+    }
+
+    .hero-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Section 2 css */
+/* Heading Section */
+.Subheadingflex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.AboutStoryheading {
+    font-family: Playfair Display, sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+    max-width: 847px;
+}
+
+.AboutStorysubheading {
+    font-family: Inter, sans-serif;
+    color: #595959;
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 764px;
+    padding-top: 10px;
+}
+
+/* Story Part */
+.AboutStoryContainer {
+    grid-column-gap: 30px;
+}
+
+.StoryImage {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+.AboutStorySectionTwoTop {
+    background-color: #ff4135;
+    color: #ffffff;
+}
+
+.AboutStorySectionTwoTop h2 {
+    font-family: Playfair Display, sans-serif;
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.AboutStorySectionTwoTop p {
+    font-family: Inter, sans-serif;
+}
+
+.AboutStorySectionTwoTop .hero-button {
+    margin-top: 1rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border: none;
+    font-weight: 600;
+    background-color: #1b1c1f;
+}
+
+.AboutStorySectionTwoTop .hero-button:hover {
+    background-color: #ffffff;
+    color: #1b1c1f;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+
+    /* Tablets */
+    .AboutStoryContainer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .AboutStorySectionTwoLeft,
+    .AboutStorySectionTwoRight {
+        width: 100%;
+    }
+
+    .AboutStorySectionTwoBottom {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .AboutStorySectionTwoBottom .col-md-6 {
+        width: 48%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Mobile screens */
+    .AboutStorySectionTwoBottom .col-md-6 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Section Three */
+.AboutSectionThreeheading {
+    font-family: Playfair Display, sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.AboutSectionThreesubheading {
+    font-size: 20px;
+}
+
+/* Carousel Css*/
+
+.AboutSlickSlide {
+    padding: 10px;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0.6;
+    /* Default opacity for inactive slides */
+}
+
+/* Highlight the active slide */
+.AboutSlickSlide.active {
+    transform: scale(1.1);
+    /* Slightly enlarge the active slide */
+    opacity: 1;
+    /* Full opacity for the active slide */
+    z-index: 2;
+    /* Bring the active slide to the front */
+}
+
+.AboutCarouselCard img {
+    border-radius: 20px;
+}
+
+/* Ensure inactive slides are not overlapping */
+.AboutSlickSlide:not(.active) {
+    transform: scale(0.9);
+    /* Slightly shrink inactive slides */
+    z-index: 1;
+    /* Push inactive slides to the back */
+}
+
+/* Carousel card styling */
+.AboutCarouselCard {
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Image styling with border radius */
+.AboutCarouselImage {
+    object-fit: cover;
+    position: relative;
+}
+
+/* Text box styles */
+.carousel-text {
+    background-color: #ff4135;
+    color: white;
+    font-size: 20px;
+    padding: 20px 30px;
+    position: absolute;
+    bottom: 20px;
+    left: 38%;
+    transform: translateX(-50%) translateY(10px);
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    font-family: Playfair Display, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add a shadow for a floating effect */
+}
+
+/* Show text box on active slide */
+.AboutSlickSlide.active .carousel-text {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    /* Move to original position */
+}
+
+/* Inactive carousel images styling */
+.AboutSlickSlide:not(.active) .AboutCarouselImage {
+    filter: brightness(80%);
+    /* Darken inactive images */
+}
+
+/* Reset filter for active image */
+.AboutSlickSlide.active .AboutCarouselImage {
+    filter: none;
+    /* Full brightness for active image */
+    border-radius: 20px;
+}
+
+/* Dots styling */
+.slick-dots li button::before {
+    color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+    font-size: 18px;
+}
+
+.slick-dots li.slick-active button::before {
+    color: white;
+}
+
+/* Arrows styling */
+.AboutSlickPrev::before,
+.AboutSlickNext::before {
+    content: '' !important;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    text-align: center;
+    line-height: 36px;
+    font-size: 20px;
+    color: white;
+}
+
+.AboutSlickPrev:hover::before,
+.AboutSlickNext:hover::before {
+    background-color: #ff4135;
+    border-color: #ff4135;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.AboutSlickPrev {
+    left: -50px;
+    z-index: 2;
+}
+
+.AboutSlickNext {
+    right: -50px;
+    z-index: 2;
+}
+
+/* Section 4 */
+.stat-number {
+    font-family: "Playfair Display", serif;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.highlight {
+    color: #ff4135;
+    /* Red color for + and % */
+}
+
+.stat-text {
+    font-family: "Playfair Display", serif;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .stat-text {
+        font-size: 1rem;
+    }
+}
+
+
+/* Section-5 Css */
+/* Section-5 Css */
+/* Menu Css */
+.menu-container {
+    margin: 50px auto;
+    max-width: 90%;
+}
+
+/* Circular Images */
+/* Section-5 Css */
+/* Menu Css */
+.menu-container {
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+/* Circular Images */
+.circular-images {
+    position: relative;
+    width: 100%;
+    height: 500px;
+}
+
+.circle {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;  /* White circular background */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Space inside the circle */
+}
+
+/* Image inside the white circle */
+.circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Positioning the circles */
+
+/* Left top */
+.circle-1 {
+    top: 44%;
+    left: -18%;
+}
+
+/* Right top */
+.circle-2 {
+    top: 44%;
+    right: -18%;
+}
+
+/* Middle large top */
+.circle-3 {
+    width: 300px;
+    height: 300px;
+    left: 30%;
+    top: 16%;
+}
+
+.circle-3 img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Left bottom Circle */
+.circle-4 {
+    bottom: -48%;
+    left: -31%;
+}
+
+/* Right Bottom Circle */
+.circle-5 {
+    bottom: -48%;
+    right: -30%;
+}
+
+/* Text Styling */
+.AboutMenu-text-content {
+    text-align: center;
+}
+
+.AboutMenu-text-content h1 {
+    font-size: 60px;
+    font-family: "Playfair Display", sans-serif;
+    font-weight: bold;
+}
+
+.AboutMenu-text-content p {
+    color: #595959;
+    font-size: 18px;
+    font-family: Inter, sans-serif;
+    margin-bottom: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* Button */
+.AboutMenuButton {
+    background-color: #ff4135;
+    color: #ffffff;
+    border-radius: 40px;
+    padding: 18px 45px;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+}
+
+.AboutMenuButton:hover {
+    background-color: #1b1c1f;
+    transition: all 0.2s;
+}
+
+/* Menu Links */
+.menu-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5rem;
+}
+
+.menu-links span {
+    font-family: "Playfair Display", sans-serif;
+    font-size: 20px;
+    color: #1b1c1f;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.menu-links span.active {
+    border-bottom: 3px solid #ff4135;
+}
+
+/* 📌 Tablet Screens (Below 1024px) */
+@media (max-width: 1024px) {
+    .menu-container {
+        max-width: 90%;
+    }
+
+    .circular-images {
+        height: 400px;
+    }
+
+    .circle {
+        width: 180px;
+        height: 180px;
+        padding: 10px; /* Maintain white background */
+    }
+
+    .circle-3 {
+        width: 250px;
+        height: 250px;
+        left: 35%;
+        top: 18%;
+    }
+
+    .circle-1,
+    .circle-2 {
+        top: 50%;
+    }
+
+    .circle-4,
+    .circle-5 {
+        bottom: -35%;
+    }
+
+    .AboutMenu-text-content h1 {
+        font-size: 50px;
+    }
+
+    .menu-links {
+        justify-content: center;
+        gap: 20px;
+    }
+}
+
+/* 📌 Mobile Screens (Below 768px) */
+@media (max-width: 768px) {
+    .menu-container {
+        text-align: center;
+    }
+
+    .circular-images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        height: auto;
+    }
+
+    .circle {
+        position: static;
+        width: 150px;
+        height: 150px;
+        padding: 8px;
+    }
+
+    .circle-3 {
+        width: 200px;
+        height: 200px;
+    }
+
+    .AboutMenu-text-content h1 {
+        font-size: 40px;
+    }
+
+    .menu-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .menu-links span {
+        font-size: 18px;
+    }
+}
+
+/* 📌 Small Mobile Screens (Below 480px) */
+@media (max-width: 480px) {
+    .circle {
+        width: 120px;
+        height: 120px;
+        padding: 5px;
+    }
+
+    .circle-3 {
+        width: 160px;
+        height: 160px;
+    }
+
+    .AboutMenu-text-content h1 {
+        font-size: 30px;
+    }
+
+    .menu-links span {
+        font-size: 16px;
+    }
+
+    .AboutMenuButton {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+}
+
+/* Testimonial css */
+.AboutRepeats {
+    margin-top: 8rem;
+}

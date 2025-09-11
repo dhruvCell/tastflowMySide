@@ -1,0 +1,252 @@
+/* General Styles */
+.tf-invoice-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Header Section */
+.tf-invoice-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #007bff;
+}
+
+.tf-invoice-info, .tf-invoice-company {
+  flex: 1;
+  min-width: 250px;
+  margin-bottom: 20px;
+}
+
+.tf-invoice-info h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.tf-invoice-info p, .tf-invoice-company p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.tf-invoice-company h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.tf-invoice-company p {
+  line-height: 1.6;
+}
+
+/* User Details Section */
+.tf-invoice-user {
+  margin: 25px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.tf-invoice-user h5 {
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.tf-invoice-user p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Food Details Section */
+.tf-invoice-food {
+  margin: 25px 0;
+}
+
+.tf-invoice-food h5 {
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.tf-invoice-food table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.tf-invoice-food th, .tf-invoice-food td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tf-invoice-food th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.tf-invoice-food td {
+  color: #555;
+}
+
+.tf-invoice-food tr:hover {
+  background-color: #f5f5f5;
+  transition: background-color 0.3s ease;
+}
+
+/* Total Summary Section */
+.tf-invoice-tax {
+  margin: 25px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.tf-invoice-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.tf-invoice-final {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #007bff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Reserved Table Info Section */
+.tf-invoice-reservation {
+  margin: 25px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.tf-invoice-reservation h5 {
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.tf-invoice-reservation p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.tf-invoice-reservation p:last-child {
+  font-style: italic;
+  color: #666;
+}
+
+/* Button Container */
+.tf-invoice-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.tf-invoice-print-btn, .tf-invoice-send-btn {
+  padding: 12px 25px;
+  font-size: 0.95rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tf-invoice-print-btn:hover, .tf-invoice-send-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.tf-invoice-send-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Footer Section */
+.tf-invoice-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #007bff;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.tf-invoice-footer p {
+  margin: 5px 0;
+}
+
+.tf-invoice-footer p:last-child {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .tf-invoice-header {
+    flex-direction: column;
+  }
+
+  .tf-invoice-info, .tf-invoice-company {
+    min-width: 100%;
+  }
+
+  .tf-invoice-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tf-invoice-print-btn, .tf-invoice-send-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .tf-invoice-container {
+    padding: 20px;
+  }
+
+  .tf-invoice-food th, .tf-invoice-food td {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .tf-invoice-final {
+    font-size: 1rem;
+  }
+}

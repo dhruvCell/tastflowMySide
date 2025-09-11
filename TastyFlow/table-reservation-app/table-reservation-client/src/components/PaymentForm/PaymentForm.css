@@ -1,0 +1,372 @@
+/* PaymentForm.css */
+.pf-fullscreen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.pf-form-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  height: 600px;
+  cursor: default;
+}
+
+.pf-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #666;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.pf-close-btn:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+.pf-left-panel {
+  flex: 1;
+  padding: 40px;
+  background: linear-gradient(135deg, #4a6cf7 0%, #2541b2 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-right-panel {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pf-header {
+  margin-bottom: 40px;
+}
+
+.pf-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pf-lock-icon {
+  color: #ffffff;
+}
+
+.pf-subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.pf-reservation-summary {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: auto;
+}
+
+.pf-reservation-summary h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.pf-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pf-detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pf-detail-item.total {
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 10px;
+  border-bottom: none;
+}
+
+.pf-security-badges {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.pf-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.pf-badge-icon {
+  font-size: 14px;
+}
+
+.pf-form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.pf-input-group {
+  margin-bottom: 25px;
+  text-align: left;
+  display: block;
+}
+
+.pf-input-group label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.pf-input-icon {
+  color: #4a6cf7;
+}
+
+.pf-card-input-wrapper {
+  position: relative;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.pf-card-input-wrapper:hover {
+  border-color: #4a6cf7;
+  box-shadow: 0 4px 10px rgba(74, 108, 247, 0.1);
+}
+
+.StripeElement {
+  width: 100%;
+  padding: 8px 0;
+}
+
+.pf-input-row {
+  display: flex;
+  gap: 20px;
+}
+
+.pf-input-row .pf-input-group {
+  flex: 1;
+}
+
+.pf-button {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #4a6cf7 0%, #2541b2 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
+}
+
+.pf-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 108, 247, 0.4);
+}
+
+.pf-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pf-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pf-notices {
+  margin-top: 15px;
+}
+
+.pf-notice {
+  font-size: 13px;
+  color: #856404;
+  background: #fff3cd;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ffeeba;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.pf-non-refundable-notice {
+  font-size: 13px;
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ffcdd2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-notice-icon {
+  color: #d32f2f;
+  font-size: 16px;
+}
+
+.pf-accepted-cards {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.pf-accepted-cards p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.pf-card-brands {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.pf-card-brand-icon {
+  width: 50px;
+  height: 40px;
+  object-fit: contain;
+  filter: grayscale(30%);
+  opacity: 0.8;
+}
+
+.pf-success-container {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.pf-success-message {
+  padding: 30px 0;
+}
+
+.pf-success-message h3 {
+  font-size: 24px;
+  color: #28a745;
+  margin: 15px 0 10px;
+}
+
+.pf-success-message p {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.pf-success-icon {
+  color: #28a745;
+  font-size: 50px;
+}
+
+.pf-success-details {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.pf-success-details .pf-detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.pf-success-details .pf-detail-item span {
+  color: #666;
+}
+
+.pf-success-details .pf-detail-item strong {
+  color: #333;
+}
+
+.pf-error {
+  color: #ff4135;
+  font-size: 14px;
+  margin: 10px 0;
+  background: #ffe5e5;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pf-form-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .pf-left-panel {
+    padding: 30px 20px;
+  }
+  
+  .pf-right-panel {
+    padding: 30px 20px;
+  }
+  
+  .pf-input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
