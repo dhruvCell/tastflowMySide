@@ -17,18 +17,24 @@ const OAuthCallback = (props) => {
           navigate("/");
         } else {
           // If no token in URL, check if user is authenticated via session
-          const response = await fetch("http://localhost:5000/api/users/getuser", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem('token')
-            }
-          });
+          const existingToken = localStorage.getItem('token');
+          if (existingToken) {
+            const response = await fetch("http://localhost:5000/api/users/getuser", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "auth-token": existingToken
+              }
+            });
 
-          if (response.ok) {
-            const user = await response.json();
-            props.showAlert("Logged In Successfully with Google", "success");
-            navigate("/");
+            if (response.ok) {
+              const user = await response.json();
+              // Don't show success alert here to avoid double notification
+              navigate("/");
+            } else {
+              props.showAlert("OAuth login failed", "danger");
+              navigate("/login");
+            }
           } else {
             props.showAlert("OAuth login failed", "danger");
             navigate("/login");

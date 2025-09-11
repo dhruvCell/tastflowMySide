@@ -34,7 +34,7 @@ const Login = (props) => {
       navigate("/");
       props.showAlert("Logged In Successfully", "success");
     } else {
-      props.showAlert("Invalid Credentials", "danger");
+      props.showAlert(json.error || "Invalid Credentials", "danger");
     }
   };
 
