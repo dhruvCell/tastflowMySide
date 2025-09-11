@@ -59,7 +59,21 @@ router.get('/auth/google',
 );
 
 router.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+      if (err) {
+        // If there's an error (like email already exists), redirect with error and email
+        const email = err.email || '';
+        return res.redirect(`http://localhost:3000/login?error=${encodeURIComponent(err.message)}&email=${encodeURIComponent(email)}`);
+      }
+      if (!user) {
+        return res.redirect('http://localhost:3000/login?error=Authentication failed');
+      }
+      // If successful, set user and proceed to googleAuth
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
   googleAuth
 );
 

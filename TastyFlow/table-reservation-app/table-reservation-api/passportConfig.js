@@ -11,6 +11,18 @@ async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id });
     if (!user) {
+      // Check if email already exists for a manually registered user
+      const existingUser = await User.findOne({
+        email: profile.emails[0].value,
+        googleId: { $exists: false }
+      });
+      if (existingUser) {
+        // Create a custom error object with email information
+        const error = new Error('Email already exists. Please login with your password.');
+        error.email = profile.emails[0].value;
+        return done(error, null);
+      }
+
       user = new User({
         googleId: profile.id,
         name: profile.displayName,

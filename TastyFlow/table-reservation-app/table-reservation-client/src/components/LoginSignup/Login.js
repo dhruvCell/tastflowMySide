@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './Login.css';
 import logo from "../../assets/logo.svg";
 
@@ -10,7 +10,24 @@ const Login = (props) => {
   });
 
   let navigate = useNavigate();
+  const location = useLocation();
   const { email, password } = credentials;
+
+  useEffect(() => {
+    // Check for OAuth error in URL parameters
+    const urlParams = new URLSearchParams(location.search);
+    const error = urlParams.get('error');
+    const email = urlParams.get('email');
+
+    if (error) {
+      props.showAlert(error, "danger");
+      if (email) {
+        setCredentials((prev) => ({ ...prev, email }));
+      }
+      // Clear the error and email from URL
+      navigate('/login', { replace: true });
+    }
+  }, [location.search, navigate, props]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
