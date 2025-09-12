@@ -11,7 +11,8 @@ const {
   recordPayment,
   getInvoicesByStatus,
   getOverdueInvoices,
-  cancelInvoice
+  cancelInvoice,
+  downloadInvoicePDF
 } = require("../controllers/invoiceController");
 
 const fetchUser = require('../middleware/fetchUser');
@@ -24,6 +25,9 @@ router.get("/admin/all-invoice", getAllInvoices);
 
 // Get an invoice by ID
 router.get("/admin/:invoiceId", getInvoiceById);
+
+// Download invoice PDF by ID
+router.get("/admin/:invoiceId/download-pdf", downloadInvoicePDF);
 
 // Edit an invoice by ID
 router.put("/admin/update/:invoiceId", updateInvoice);
