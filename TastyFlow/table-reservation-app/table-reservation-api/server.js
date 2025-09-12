@@ -33,7 +33,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const mongoUrl = "mongodb://127.0.0.1:27017/register?directConnection=true&serverSelectionTimeoutMS=5000&appName=mongosh+2.0.1";
+const mongoUrl = "mongodb://127.0.0.1:27017/tastyflow?directConnection=true&serverSelectionTimeoutMS=5000&appName=mongosh+2.0.1";
 
 const connectToMongo = async () => {
   try {
