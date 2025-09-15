@@ -5,7 +5,6 @@ const path = require('path');
 function generateInvoicePDF(invoice, user, callback) {
   try {
     const doc = new PDFDocument({ size: 'A4', margin: 50 });
-    console.log("Generating PDF for invoice:", invoice);
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
     doc.on('end', () => {
@@ -13,106 +12,170 @@ function generateInvoicePDF(invoice, user, callback) {
       callback(null, pdfData);
     });
 
-    // Document metadata
-    doc.info.Title = `Invoice_${invoice.invoiceNumber}`;
-    doc.info.Author = 'TastyFlow';
+    // === COLORS & STYLES ===
+    const colors = {
+      primary: '#003366',     // Dark blue
+      secondary: '#F5F7FA',   // Light grey
+      accent: '#FF9900',      // Orange
+      text: '#333333',
+      lightText: '#666666',
+      border: '#DDDDDD'
+    };
 
-    // Header
-    doc
-      .fontSize(20)
-      .text('TastyFlow Invoice', { align: 'center' })
-      .moveDown();
+    // === HEADER SECTION ===
+const logoPath = path.join(__dirname, '../../table-reservation-client/src/assets', 'LOGO_1.png');
+if (fs.existsSync(logoPath)) {
+  doc.image(logoPath, 50, 40, { width: 60 });
+}
 
-    // Invoice details
+// Company name (next to logo)
+doc
+  .fillColor(colors.primary)
+  .fontSize(20)
+  .font('Helvetica-Bold')
+  .text('TastyFlow', 120, 60);
+
+// Address block on the right side
+doc
+  .fillColor(colors.lightText)
+  .fontSize(10)
+  .font('Helvetica')
+  .text('123 Foodie Street', 350, 50, { align: 'right', width: 200 })
+  .text('Flavor Town, FT 45678', 350, 65, { align: 'right', width: 200 })
+  .text('Email: support@tastyflow.com', 350, 80, { align: 'right', width: 200 });
+
+// Divider under header
+doc
+  .moveTo(50, 120)
+  .lineTo(550, 120)
+  .strokeColor(colors.primary)
+  .lineWidth(1.5)
+  .stroke();
+
+
+    // === INVOICE DETAILS BOX ===
     doc
+      .roundedRect(350, 140, 200, 80, 5)
+      .fillColor(colors.secondary)
+      .fill();
+
+    doc
+      .fillColor(colors.primary)
       .fontSize(12)
-      .text(`Invoice Number: ${invoice.invoiceNumber}`)
-      .text(`Invoice Date: ${invoice.invoiceDate ? invoice.invoiceDate.toDateString() : new Date().toDateString()}`)
-      .moveDown();
+      .font('Helvetica-Bold')
+      .text('INVOICE DETAILS', 360, 150);
 
-    // User details
     doc
-      .fontSize(14)
-      .text('Billed To:', { underline: true })
-      .fontSize(12)
-      .text(`Name: ${user.name}`)
-      .text(`Email: ${user.email}`)
-      .text(`Contact: ${user.contact || 'N/A'}`)
-      .moveDown();
+      .fillColor(colors.text)
+      .font('Helvetica')
+      .fontSize(10)
+      .text(`Invoice #: ${invoice.invoiceNumber}`, 360, 170)
+      .text(`Date: ${invoice.invoiceDate ? new Date(invoice.invoiceDate).toDateString() : new Date().toDateString()}`, 360, 185);
 
-    // Reserved table info if available
+    // === BILL TO ===
+    doc
+      .fillColor(colors.primary)
+      .fontSize(12)
+      .font('Helvetica-Bold')
+      .text('Bill To:', 50, 150);
+
+    doc
+      .fillColor(colors.text)
+      .font('Helvetica')
+      .fontSize(10)
+      .text(user.name, 50, 170)
+      .text(`Email: ${user.email}`, 50, 185)
+      .text(`Contact: ${user.contact || 'N/A'}`, 50, 200);
+
+    // === RESERVATION INFO ===
     if (invoice.reservedTableInfo == null) {
       doc
-        .fontSize(14)
-        .text('Reservation Details:', { underline: true })
+        .fillColor(colors.primary)
         .fontSize(12)
-        .text(`Table Number: ${invoice.reservedTableInfo.tableNumber}`)
-        .text(`Slot Time: ${invoice.reservedTableInfo.slotTime}`)
-        .text(`Date: ${invoice.reservedTableInfo.date ? new Date(invoice.reservedTableInfo.date).toDateString() : 'N/A'}`)
-        .moveDown();
-    }
-
-    // Table header for foods
-    doc
-      .fontSize(14)
-      .text('Order Details:', { underline: true })
-      .moveDown(0.5);
-
-    // Table columns
-    const tableTop = doc.y;
-    const itemX = 50;
-    const qtyX = 300;
-    const priceX = 350;
-    const totalX = 450;
-
-    doc
-      .fontSize(12)
-      .text('Item', itemX, tableTop, { bold: true })
-      .text('Qty', qtyX, tableTop)
-      .text('Price', priceX, tableTop)
-      .text('Total', totalX, tableTop);
-
-    doc.moveDown();
-
-    // List foods
-    invoice.foods.forEach((food, i) => {
-      const y = tableTop + 25 + i * 20;
-      const price = food.price || 0;
-      const quantity = food.quantity || 0;
-      const itemTotal = price * quantity;
+        .font('Helvetica-Bold')
+        .text('Reservation Info:', 50, 230);
 
       doc
-        .fontSize(12)
-        .text(food.name || 'Unknown Item', itemX, y)
-        .text(quantity, qtyX, y)
-        .text(price.toFixed(2), priceX, y)
-        .text(itemTotal.toFixed(2), totalX, y);
+        .fillColor(colors.text)
+        .font('Helvetica')
+        .fontSize(10)
+        .text(`Table No: ${invoice.reservedTableInfo.tableNumber}`, 50, 250)
+        .text(`Slot: ${invoice.reservedTableInfo.slotTime}`, 50, 265)
+        .text(`Date: ${invoice.reservedTableInfo.date ? new Date(invoice.reservedTableInfo.date).toDateString() : 'N/A'}`, 50, 280);
+    }
+
+    // === ORDER TABLE HEADER ===
+    let tableTop = 320;
+
+    doc
+      .rect(50, tableTop, 500, 25)
+      .fillColor(colors.primary)
+      .fill();
+
+    doc
+      .fillColor('#fff')
+      .fontSize(11)
+      .font('Helvetica-Bold')
+      .text('Item', 55, tableTop + 7)
+      .text('Qty', 280, tableTop + 7, { width: 50, align: 'center' })
+      .text('Price', 340, tableTop + 7, { width: 80, align: 'right' })
+      .text('Total', 440, tableTop + 7, { width: 90, align: 'right' });
+
+    // === ORDER TABLE ROWS ===
+    let y = tableTop + 30;
+    doc.font('Helvetica').fontSize(10);
+
+    invoice.foods.forEach((food, i) => {
+      const price = food.price || 0;
+      const qty = food.quantity || 0;
+      const total = price * qty;
+
+      // Alternate background
+      if (i % 2 === 0) {
+        doc.fillColor(colors.secondary).rect(50, y - 5, 500, 20).fill();
+      }
+
+      doc.fillColor(colors.text);
+      doc.text(food.name || 'N/A', 55, y);
+      doc.text(qty.toString(), 280, y, { width: 50, align: 'center' });
+      doc.text(price.toFixed(2), 340, y, { width: 80, align: 'right' });
+      doc.text(total.toFixed(2), 440, y, { width: 90, align: 'right' });
+
+      y += 20;
     });
 
-    doc.moveDown(2);
-
-    // Subtotal, taxes, round off, total
-    const summaryTop = doc.y;
-    const subtotal = invoice.subtotal || 0;
-    const cgst = invoice.cgst || 0;
-    const sgst = invoice.sgst || 0;
-    const roundOff = invoice.roundOff || 0;
-    const totalAmount = invoice.totalAmount || 0;
-
+    // === SUMMARY BOX ===
+    y += 20;
     doc
-      .fontSize(12)
-      .text(`Subtotal: ${subtotal.toFixed(2)}`, { align: 'right' })
-      .text(`CGST: ${cgst.toFixed(2)}`, { align: 'right' })
-      .text(`SGST: ${sgst.toFixed(2)}`, { align: 'right' })
-      .text(`Round Off: ${roundOff.toFixed(2)}`, { align: 'right' })
-      .moveDown(0.5)
-      .fontSize(14)
-      .text(`Total Amount: ${totalAmount.toFixed(2)}`, { align: 'right', underline: true });
+      .roundedRect(300, y, 250, 100, 8)
+      .fillColor(colors.secondary)
+      .fill();
 
-    // Footer
+    y += 10;
+    const summaryLine = (label, value, bold = false) => {
+      doc
+        .fillColor(colors.text)
+        .font(bold ? 'Helvetica-Bold' : 'Helvetica')
+        .fontSize(11)
+        .text(label, 310, y)
+        .text(value.toFixed(2), 500, y, { width: 40, align: 'right' });
+      y += 18;
+    };
+
+    summaryLine('Subtotal:', invoice.subtotal || 0);
+    summaryLine('CGST:', invoice.cgst || 0);
+    summaryLine('SGST:', invoice.sgst || 0);
+    summaryLine('Round Off:', invoice.roundOff || 0);
+    summaryLine('Total:', invoice.finalAmount || invoice.totalAmount || 0, true);
+
+    // === FOOTER ===
+    doc.moveTo(50, 720).lineTo(550, 720).strokeColor(colors.border).lineWidth(0.5).stroke();
+
     doc
       .fontSize(10)
-      .text('Thank you for your business!', 50, 750, { align: 'center', width: 500 });
+      .fillColor(colors.lightText)
+      .text('Thank you for dining with TastyFlow!', 50, 740, { align: 'center', width: 500 })
+      .text('For any queries contact support@tastyflow.com', 50, 755, { align: 'center', width: 500 });
 
     doc.end();
   } catch (error) {
@@ -120,6 +183,4 @@ function generateInvoicePDF(invoice, user, callback) {
   }
 }
 
-module.exports = {
-  generateInvoicePDF,
-};
+module.exports = { generateInvoicePDF };
