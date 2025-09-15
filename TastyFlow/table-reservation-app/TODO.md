@@ -20,3 +20,19 @@
 - Test forgot password with Google login user email
 - Test forgot password with regular user email
 - Verify notification message is displayed correctly
+
+# TODO: Implement Invoice PDF Download Feature
+
+## Pending Tasks
+- [x] Install pdfkit npm package in the API project (already installed)
+- [x] Create pdfInvoiceGenerator.js file with PDF generation logic using pdfkit
+- [x] Implement generateInvoicePDF function in pdfInvoiceGenerator.js with good design and all invoice details
+- [x] Add downloadInvoicePDF function in invoiceController.js to handle PDF download requests
+- [x] Add new route '/admin/:invoiceId/download-pdf' in InvoiceRoute.js for PDF download
+- [ ] Test the PDF download feature by calling the API endpoint
+
+## Summary
+- Add PDF download functionality for invoices using pdfkit
+- Create a new file for PDF generation with professional invoice design
+- Include all necessary invoice details: invoice number, date, user info, food items, prices, taxes, total, reserved table info if applicable
+- Add new API endpoint to download invoice as PDF

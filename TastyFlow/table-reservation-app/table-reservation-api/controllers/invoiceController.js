@@ -445,7 +445,7 @@ const cancelInvoice = async (req, res) => {
     }
 
     if (invoice.status === 'cancelled') {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Invoice is already cancelled",
         currentStatus: invoice.status
       });
@@ -453,7 +453,7 @@ const cancelInvoice = async (req, res) => {
 
     const invoiceAgeDays = (new Date() - invoice.invoiceDate) / (1000 * 60 * 60 * 24);
     if (invoiceAgeDays > 30) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Cannot cancel invoices older than 30 days",
         invoiceAgeDays: Math.floor(invoiceAgeDays)
       });
@@ -466,10 +466,10 @@ const cancelInvoice = async (req, res) => {
     invoice.cancellationDate = new Date();
     invoice.cancellationReason = cancellationReason || 'Cancelled by admin';
     invoice.cancelledBy = userId || req.user?._id; // Use either from body or auth
-    
+
     await invoice.save();
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: "Invoice cancelled successfully",
       invoice,
       requiresRefund,
@@ -477,9 +477,44 @@ const cancelInvoice = async (req, res) => {
     });
   } catch (error) {
     console.error("Error cancelling invoice:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Failed to cancel invoice",
-      error: error.message 
+      error: error.message
+    });
+  }
+};
+
+const { generateInvoicePDF } = require("../utils/pdfInvoiceGenerator");
+
+const downloadInvoicePDF = async (req, res) => {
+  try {
+    const { invoiceId } = req.params;
+
+    const invoice = await Invoice.findById(invoiceId)
+      .populate("userId", "name email contact")
+      .populate("foods.foodId", "name price");
+
+    if (!invoice) {
+      return res.status(404).json({ message: "Invoice not found" });
+    }
+
+    const user = invoice.userId;
+
+    generateInvoicePDF(invoice, user, (error, pdfData) => {
+      if (error) {
+        console.error("Error generating PDF:", error);
+        return res.status(500).json({ message: "Failed to generate PDF" });
+      }
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=Invoice_${invoice.invoiceNumber}.pdf`);
+      res.send(pdfData);
+    });
+  } catch (error) {
+    console.error("Error downloading invoice PDF:", error);
+    res.status(500).json({
+      message: "Failed to download invoice PDF",
+      error: error.message
     });
   }
 };
@@ -495,5 +530,6 @@ module.exports = {
   recordPayment,
   getInvoicesByStatus,
   getOverdueInvoices,
-  cancelInvoice
+  cancelInvoice,
+  downloadInvoicePDF
 };

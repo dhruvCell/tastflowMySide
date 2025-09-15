@@ -472,6 +472,37 @@ const fetchInvoices = async () => {
     setCancelModalVisible(true);
   };
 
+  const downloadInvoicePDF = async (invoiceId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/invoice/admin/${invoiceId}/download-pdf`,
+        {
+          responseType: 'blob', // Important for handling PDF downloads
+        }
+      );
+
+      // Create a blob URL for the PDF
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a temporary anchor element and trigger download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Invoice_${invoiceId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+
+      // Clean up
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      message.success('Invoice PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      message.error('Failed to download invoice PDF');
+    }
+  };
+
   useEffect(() => {
     fetchInvoices();
   }, []);
@@ -551,6 +582,12 @@ const fetchInvoices = async () => {
                             className="invoice-list-view-btn"
                           >
                             Details
+                          </button>
+                          <button
+                            onClick={() => downloadInvoicePDF(invoice._id)}
+                            className="invoice-list-pdf-btn"
+                          >
+                            Download PDF
                           </button>
                           <button
                             onClick={() => navigateToEditInvoice(invoice._id)}
