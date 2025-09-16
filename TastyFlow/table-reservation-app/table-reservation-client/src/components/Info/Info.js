@@ -115,13 +115,10 @@ const Info = () => {
             <button
               className="message-btn"
               onClick={() => {
-                setShowMessages(!showMessages);
-                if (!showMessages && messages.length === 0) {
-                  fetchMessages();
-                }
+                navigate('/user/messages');
               }}
             >
-              {showMessages ? 'Hide My Messages' : 'View My Messages'}
+              View My Messages
             </button>
           </div>
 
