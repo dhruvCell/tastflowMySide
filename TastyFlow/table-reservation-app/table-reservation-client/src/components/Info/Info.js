@@ -52,26 +52,36 @@ const Info = () => {
     <div className='container info my-4'>
       <h1>Personal Information</h1>
       {userDetails.name ? (
-        <table className='user-table'>
-          <tbody>
-            <tr>
-              <th>User Name:</th>
-              <td>{userDetails.name}</td>
-            </tr>
-            <tr>
-              <th>User Email:</th>
-              <td>{userDetails.email}</td>
-            </tr>
-            <tr>
-              <th>User ID:</th>
-              <td>{userDetails._id}</td>
-            </tr>
-            <tr>
-              <th>User Role:</th>
-              <td>{userDetails.role}</td>
-            </tr>
-          </tbody>
-        </table>
+        <>
+          <table className='user-table'>
+            <tbody>
+              <tr>
+                <th>User Name:</th>
+                <td>{userDetails.name}</td>
+              </tr>
+              <tr>
+                <th>User Email:</th>
+                <td>{userDetails.email}</td>
+              </tr>
+              <tr>
+                <th>User ID:</th>
+                <td>{userDetails._id}</td>
+              </tr>
+              <tr>
+                <th>User Role:</th>
+                <td>{userDetails.role}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="info-actions">
+            <button
+              className="invoice-btn"
+              onClick={() => navigate('/user/invoices')}
+            >
+              View My Invoices
+            </button>
+          </div>
+        </>
       ) : (
         <p className='no-details'>No user details available.</p>
       )}

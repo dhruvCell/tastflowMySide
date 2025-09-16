@@ -262,6 +262,27 @@ const getInvoicesByUser = async (req, res) => {
   }
 };
 
+// Get invoices for logged-in user
+const getInvoicesForLoggedUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const invoices = await Invoice.find({ userId })
+      .populate("userId", "name email")
+      .populate("foods.foodId", "name price")
+      .sort({ invoiceDate: -1 });
+
+    if (!invoices || invoices.length === 0) {
+      return res.status(404).json({ message: "No invoices found for this user" });
+    }
+
+    res.json(invoices);
+  } catch (err) {
+    console.error("Error fetching invoices for logged user:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 // Get user data with payment details
 const getUserWithPayments = async (req, res) => {
   try {
@@ -525,6 +546,7 @@ module.exports = {
   getInvoiceById,
   updateInvoice,
   getInvoicesByUser,
+  getInvoicesForLoggedUser,
   getUserWithPayments,
   updateInvoiceStatus,
   recordPayment,

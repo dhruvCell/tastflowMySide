@@ -50,6 +50,30 @@
   margin-top: 20px;
 }
 
+/* Actions section */
+.info-actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.invoice-btn {
+  background-color: #ff4135;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.invoice-btn:hover {
+  background-color: #e63946;
+}
+
 /* Responsive styling */
 @media (max-width: 1200px) {
   .info {

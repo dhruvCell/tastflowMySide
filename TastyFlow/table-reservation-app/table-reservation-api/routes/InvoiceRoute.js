@@ -6,6 +6,7 @@ const {
   getInvoiceById,
   updateInvoice,
   getInvoicesByUser,
+  getInvoicesForLoggedUser,
   getUserWithPayments,
   updateInvoiceStatus,
   recordPayment,
@@ -50,6 +51,9 @@ router.get("/admin/status/:status", getInvoicesByStatus);
 // Get overdue invoices
 router.get("/admin/overdue", getOverdueInvoices);
 // router.patch("/admin/:invoiceId/status", updateInvoiceStatus);
+
+// Get invoices for logged-in user
+router.get("/user/invoices", fetchUser, getInvoicesForLoggedUser);
 
 router.patch("/admin/:invoiceId/cancel", cancelInvoice);
 
