@@ -30,6 +30,7 @@ import InvoiceDetail from './components/UserInvoiceList/UserInvoiceList';
 import EditInvoice from './components/EditInvoice/EditInvoice';
 import UserInvoice from "./components/UserInvoice/UserInvoice";
 import UserInvoices from "./components/UserInvoices/UserInvoices";
+import UserInvoiceDetail from "./components/UserInvoiceDetail/UserInvoiceDetail";
 import Graph from "./components/Graph/Graph";
 import FoodDetail from "./components/FoodDetail/FoodDetail";
 import Services from './components/Services/Services';
@@ -147,14 +148,15 @@ function App() {
           <Route path="/admin/invoices/edit/:invoiceId" element={<AdminRoute element={<EditInvoice showAlert={showAlert} />} />} />
           <Route path="/admin/users/invoice/:userId" element={<PrivateRoute element={<UserInvoice />} />} />
           <Route path="/user/invoices" element={<PrivateRoute element={<UserInvoices />} />} />
+          <Route path="/user/:invoiceId" element={<PrivateRoute element={<UserInvoiceDetail />} />} />
           <Route path="/admin/graph" element={<AdminRoute element={<Graph />} />} />
           <Route path="/food/:id" element={<FoodDetail />} />
-          <Route path="*" element={<Navigate to="/" />} />
           <Route path="/About" element={<About />} />
           <Route path="/Menu_Page" element={<Menu_Page />} />
           <Route path="/Recipes" element={<Recipes />} />
           <Route path='/Services' element={<Services/>}/>
           <Route path='/BlogDetails' element={<BlogDeatils/>}/>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         </MessageProvider>
       </FoodProvider>

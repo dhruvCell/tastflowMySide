@@ -1,0 +1,59 @@
+.user-invoice-detail-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-invoice-detail-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.user-invoice-detail-info {
+  margin-bottom: 20px;
+}
+
+.user-invoice-detail-info p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.user-invoice-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-invoice-detail-table th,
+.user-invoice-detail-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.user-invoice-detail-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.user-invoice-detail-reservation {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e8f4fd;
+  border-radius: 5px;
+}
+
+.user-invoice-detail-reservation h3 {
+  margin-top: 0;
+  color: #007bff;
+}
+
+.user-invoice-detail-loading,
+.user-invoice-detail-error {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+}

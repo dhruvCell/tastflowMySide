@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
+import { FaArrowLeft } from 'react-icons/fa';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import "./UserInvoices.css";
 
@@ -39,7 +40,11 @@ const UserInvoices = () => {
     }, []);
 
     const navigateToInvoiceDetail = (invoiceId) => {
-        navigate(`/admin/invoices/${invoiceId}`);
+        navigate(`/user/${invoiceId}`);
+    };
+
+    const goBack = () => {
+        navigate(-1);
     };
 
     const downloadInvoicePDF = async (invoiceId) => {
@@ -120,7 +125,12 @@ const UserInvoices = () => {
         <div className="user-invoices-container">
             <main className="user-invoices-content">
                 <header className="user-invoices-header">
-                    <h1>My Invoices</h1>
+                    <div className="user-invoices-header-top">
+                        <button onClick={goBack} className="user-invoices-back-btn">
+                            <FaArrowLeft /> Back
+                        </button>
+                        <h1>My Invoices</h1>
+                    </div>
                     <p className="user-invoices-subtitle">View and manage your invoices</p>
                 </header>
 
