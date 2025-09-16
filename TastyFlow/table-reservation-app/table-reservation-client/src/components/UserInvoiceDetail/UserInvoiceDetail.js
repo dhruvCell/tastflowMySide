@@ -60,9 +60,6 @@ const UserInvoiceDetail = () => {
     <div className="inv-detail-container">
       <main className="inv-detail-content">
         <header className="inv-detail-header">
-          <button onClick={goBack} className="inv-detail-back-btn">
-            <FaArrowLeft /> Back
-          </button>
           <h1>Invoice Details</h1>
           <div className="inv-detail-meta">
             <span>Invoice: {invoice.invoiceNumber}</span>
@@ -74,6 +71,9 @@ const UserInvoiceDetail = () => {
               </div>
             )}
           </div>
+          <button onClick={goBack} className="inv-detail-back-btn">
+            <FaArrowLeft /> Back
+          </button>
         </header>
 
         <div className="inv-detail-view">

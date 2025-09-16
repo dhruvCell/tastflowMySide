@@ -57,3 +57,25 @@
   padding: 50px;
   font-size: 18px;
 }
+
+.inv-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inv-detail-back-btn {
+  background: #f2f2f2;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inv-detail-back-btn:hover {
+  background: #e8e8e8;
+}

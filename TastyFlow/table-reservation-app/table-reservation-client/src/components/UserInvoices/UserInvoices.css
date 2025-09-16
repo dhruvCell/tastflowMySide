@@ -34,6 +34,31 @@
   margin: 0;
 }
 
+.user-invoices-header-top {
+  position: relative;
+}
+
+.user-invoices-back-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: var(--bg-darker);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.user-invoices-back-btn:hover {
+  background: var(--bg-lighter);
+  color: var(--text-primary);
+}
+
 .user-invoices-loading {
   display: flex;
   justify-content: center;
