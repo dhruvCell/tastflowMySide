@@ -54,6 +54,10 @@
 .info-actions {
   margin-top: 30px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .invoice-btn {
@@ -72,6 +76,163 @@
 
 .invoice-btn:hover {
   background-color: #e63946;
+}
+
+/* Message button */
+.message-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.message-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Messages section */
+.messages-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #2a2d32;
+  border-radius: 8px;
+}
+
+.messages-section h2 {
+  color: #ff4135;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.message-card {
+  background-color: #333;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.message-date {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.message-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.status-replied {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-closed {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.message-content {
+  color: #fff;
+}
+
+.original-message {
+  margin-bottom: 20px;
+}
+
+.original-message strong {
+  color: #ff4135;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.original-message p {
+  background-color: #444;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.message-replies {
+  margin-top: 20px;
+}
+
+.message-replies strong {
+  color: #007bff;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.reply-item {
+  background-color: #444;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border-left: 4px solid #007bff;
+}
+
+.reply-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.reply-admin {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.reply-date {
+  color: #ccc;
+}
+
+.reply-content {
+  margin: 0;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.no-messages {
+  text-align: center;
+  color: #ccc;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 /* Responsive styling */
