@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import Invoice from '../Invoice/Invoice';
 import { toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import './UserFoodPage.css';
 
 const UserFoodPage = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
   const [foods, setFoods] = useState([]);
   const [selectedFoods, setSelectedFoods] = useState([]);
   const [total, setTotal] = useState(0);
@@ -220,6 +221,15 @@ const UserFoodPage = () => {
 
   return (
     <div className="ufp-container">
+      <div className="ufp-header">
+        <button
+          onClick={() => navigate(-1)}
+          className="ufp-back-btn"
+        >
+          ← Back
+        </button>
+        <h1>Food Selection</h1>
+      </div>
       <div className="container ufp-content-wrapper">
         {/* Left Panel - Food Selection */}
         <div className="ufp-food-selection">
