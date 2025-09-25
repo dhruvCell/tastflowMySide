@@ -128,10 +128,14 @@ const FoodDetail = () => {
         
         {/* Hero Section */}
         <div className="food-hero">
-          <div 
+          <img 
             className="hero-bg-image" 
-            style={{backgroundImage: `url(http://localhost:5000/uploads/${food.image})`}}
-          ></div>
+            src={`http://localhost:5000/uploads/${food.image}`}
+            alt={food.name}
+            onError={(e) => {
+              e.target.src = '/placeholder-food.jpg'; // Fallback image
+            }}
+          />
           <div className="hero-overlay">
             <div className="hero-content">
               <div className="food-badge">
