@@ -41,6 +41,10 @@ import Menu_Page from './components/Menu Page/Menu_Page';
 import { SocketProvider } from './context/SocketContext';
 import { FoodProvider } from './context/FoodContext';
 import { MessageProvider } from './context/MessageContext';
+import { Howl } from 'howler';
+
+
+const clickOption = new Howl({ src: ['/sounds/click.mp3'] });
 
 
 

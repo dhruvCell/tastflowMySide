@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { Howl } from 'howler';
 import { useFood } from '../../context/FoodContext';
+const AddItem = new Howl({ src: ['/sounds/submit.mp3'] });
 
 const Add = () => {
   const [image, setImage] = useState(false);
@@ -33,10 +34,6 @@ const Add = () => {
     text: '',
     author: '',
     rating: 0,
-  });
-
-  const foodAdd = new Howl({
-    src: ['/sounds/success.mp3'],
   });
 
   const { fetchFoodList } = useFood();
@@ -134,7 +131,7 @@ const Add = () => {
           similarDishes: [],
         });
         setImage(false);
-        foodAdd.play();
+        AddItem.play();
         toast.success(response.data.message);
         fetchFoodList();
       } else {

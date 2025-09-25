@@ -14,6 +14,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useMessages } from '../../context/MessageContext';
 import { Howl } from 'howler';
+const emailSend = new Howl({ src: ['/sounds/email.mp3'] });
+const cancelButton = new Howl({ src: ['/sounds/cancel.mp3'] });
 
 const Reviews = () => {
   const { messages, loading, newMessageNotification } = useMessages();
@@ -27,7 +29,7 @@ const Reviews = () => {
   const [NewMessageNotification, setNewMessageNotification] = useState(false);
 
   const notificationSound = new Howl({
-    src: ['/sounds/notification.mp3']
+    src: ['/sounds/cancel.mp3']
   });
 
   const handleReplyClick = (messageId) => {
@@ -62,12 +64,10 @@ const Reviews = () => {
           replyContent
         })
       });
-
+      emailSend.play();
       if (!response.ok) {
         throw new Error('Failed to send reply');
       }
-
-      notificationSound.play();
       setReplyingTo(null);
       setReplyContent('');
     } catch (error) {
@@ -85,6 +85,10 @@ const Reviews = () => {
     message.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const ClickCancel = () => {
+    setReplyingTo(null)
+    cancelButton.play();
+  }
   return (
     <div className="reviews-admin-container">
       <Sidebar />
@@ -196,7 +200,7 @@ const Reviews = () => {
                         <div className="reply-actions">
                           <button 
                             className="cancel-btn"
-                            onClick={() => setReplyingTo(null)}
+                            onClick={ClickCancel}
                             disabled={isSending}
                           >
                             Cancel

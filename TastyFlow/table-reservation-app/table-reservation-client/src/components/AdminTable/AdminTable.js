@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faTable } from '@fortawesome/free-solid-svg-icons';
 import "./AdminTable.css";
-
+import { Howl } from 'howler';
+const clickOption = new Howl({ src: ['/sounds/click.mp3'] });
 const AdminTable = () => {
   return (
     <div className="at-container">
@@ -25,7 +26,7 @@ const AdminTable = () => {
               key={slot}
               className="at-slot-card"
             >
-              <div className="at-slot-content">
+              <div className="at-slot-content" onClick={() => {clickOption.play()}}>
                 <FontAwesomeIcon icon={faCalendarAlt} className="at-slot-icon" />
                 <h3>Slot {slot}</h3>
                 <p>Manage tables for this time period</p>

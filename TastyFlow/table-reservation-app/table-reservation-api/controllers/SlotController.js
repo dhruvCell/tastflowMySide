@@ -179,10 +179,6 @@ const adminUnreserveSlot = async (req, res) => {
     const userRole = req.user.role;
     const slotNumber = parseInt(req.params.slotNumber);
 
-    if (userRole !== 'admin') {
-      return res.status(403).json({ message: 'Access denied. Admins only.' });
-    }
-
     const slot = await Slot.findOne({ slotNumber, number });
     if (!slot) return res.status(404).json({ message: 'Slot not found' });
 
@@ -310,10 +306,6 @@ const changeTable = async (req, res) => {
   try {
     const { oldTableNumber, newTableNumber } = req.body;
     const slotNumber = parseInt(req.params.slotNumber);
-    
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Only admins can change tables' });
-    }
 
     // Get the old table
     const oldTable = await Slot.findOne({ slotNumber, number: oldTableNumber });

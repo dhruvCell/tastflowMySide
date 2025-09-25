@@ -24,7 +24,7 @@ app.use(express.json());
 
 // Session middleware
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-session-secret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -33,7 +33,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const mongoUrl = "mongodb://127.0.0.1:27017/tastyflow?directConnection=true&serverSelectionTimeoutMS=5000&appName=mongosh+2.0.1";
+const mongoUrl = process.env.MONGO_URI;
 
 const connectToMongo = async () => {
   try {

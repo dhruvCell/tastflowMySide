@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faFilter, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../Pagination/Pagination';
 import './List.css';
+import { Howl } from 'howler';
+const deleteItem = new Howl({ src: ['/sounds/cancel.mp3'] });
 
 const List = () => {
   const [list, setList] = useState([]);
@@ -40,6 +42,7 @@ const List = () => {
       await fetchList();
       if (response.data.success) {
         toast.success(response.data.message);
+        deleteItem.play();
       } else {
         toast.error("Error removing the food item");
       }

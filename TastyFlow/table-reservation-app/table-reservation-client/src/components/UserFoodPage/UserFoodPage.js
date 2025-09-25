@@ -222,13 +222,6 @@ const UserFoodPage = () => {
   return (
     <div className="ufp-container">
       <div className="ufp-header">
-        <button
-          onClick={() => navigate(-1)}
-          className="ufp-back-btn"
-        >
-          ← Back
-        </button>
-        <h1>Food Selection</h1>
       </div>
       <div className="container ufp-content-wrapper">
         {/* Left Panel - Food Selection */}
