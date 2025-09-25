@@ -113,7 +113,7 @@ const Add = () => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="admin-container">
       <Sidebar />
       <div className="add">
         <form className="flex-col" onSubmit={onSubmitHandler}>
