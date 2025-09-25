@@ -145,33 +145,7 @@ const FoodDetail = () => {
             <p className="food-tagline">
               {food.tagline || `A delicious ${food.category?.toLowerCase()} that will delight your taste buds`}
             </p>
-            <div className="food-meta">
-              <div className="meta-item">
-                <FaClock className="meta-icon" />
-                <span>{food.preparationTime || '30 mins'}</span>
-              </div>
-              <div className="meta-item">
-                <FaUserFriends className="meta-icon" />
-                <span>{food.servings || '4'} servings</span>
-              </div>
-              <div className="meta-item">
-                <FaFire className="meta-icon" />
-                <span>{food.calories || '320'} cal</span>
-              </div>
-              <div className="meta-item rating">
-                <FaStar className="meta-icon" />
-                <span>{food.rating || '4.8'}</span>
-              </div>
-              {food.difficulty && (
-                <div
-                  className="meta-item difficulty"
-                  style={{color: getDifficultyColor(food.difficulty)}}
-                >
-                  <span>•</span>
-                  {food.difficulty}
-                </div>
-              )}
-            </div>
+            
           </div>
         </div>
       </div>
@@ -259,7 +233,6 @@ const FoodDetail = () => {
                     {food.preparationSteps?.map((step, index) => (
                       <div key={index} className="step-card">
                         <div className="step-header">
-                          <div className="step-number">{index + 1}</div>
                           <h3 className="step-title">Step {index + 1}</h3>
                         </div>
                         <p className="step-description">{step}</p>
