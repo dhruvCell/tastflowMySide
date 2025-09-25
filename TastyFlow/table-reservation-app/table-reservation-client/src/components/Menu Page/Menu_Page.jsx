@@ -47,6 +47,24 @@ const Menu_Page = ({showAlert}) => {
     }
   };
 
+  useEffect(() => {
+    const getUserDetails = async () => {
+      const userData = await fetchUserDetails();
+      if(localStorage.getItem("token")){
+        setUserDetails(userData);
+      }else{
+        navigate("/login");
+      }
+      if (userData) {
+        setUserDetails(userData);
+      } else {
+        setUserDetails({ name: "", email: "", id: "" });
+      }
+    };
+
+    getUserDetails();
+    fetchFoodList();
+  }, []);
 
   // Group food items by meal type and category
   const groupedFood = foodList.reduce((acc, item) => {
