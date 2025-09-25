@@ -13,7 +13,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY);
 
 
 const reserveSound = new Howl({ src: ['/sounds/submit.mp3'] });
-const unreserveSound = new Howl({ src: ['/sounds/submit.mp3'] });
+const unreserveSound = new Howl({ src: ['/sounds/cancel.mp3'] });
 
 const TableComponent = ({ showAlert }) => {
   const [tables, setTables] = useState([]);
