@@ -123,60 +123,60 @@ const FoodDetail = () => {
 
   return (
     <>
-      <div className="food-detail-container">
-        <ToastContainer position="top-right" autoClose={3000} />
-        
-        {/* Hero Section */}
-        <div className="food-hero">
-          <img 
-            className="hero-bg-image" 
-            src={`http://localhost:5000/uploads/${food.image}`}
-            alt={food.name}
-            onError={(e) => {
-              e.target.src = '/placeholder-food.jpg'; // Fallback image
-            }}
-          />
-          <div className="hero-overlay">
-            <div className="hero-content">
-              <div className="food-badge">
-                <FaLeaf className="badge-icon" />
-                {food.category}
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Hero Section - Full Width */}
+      <div className="food-hero">
+        <img
+          className="hero-bg-image"
+          src={`http://localhost:5000/uploads/${food.image}`}
+          alt={food.name}
+          onError={(e) => {
+            e.target.src = '/placeholder-food.jpg'; // Fallback image
+          }}
+        />
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <div className="food-badge">
+              <FaLeaf className="badge-icon" />
+              {food.category}
+            </div>
+            <h1 className="food-title">{food.name}</h1>
+            <p className="food-tagline">
+              {food.tagline || `A delicious ${food.category?.toLowerCase()} that will delight your taste buds`}
+            </p>
+            <div className="food-meta">
+              <div className="meta-item">
+                <FaClock className="meta-icon" />
+                <span>{food.preparationTime || '30 mins'}</span>
               </div>
-              <h1 className="food-title">{food.name}</h1>
-              <p className="food-tagline">
-                {food.tagline || `A delicious ${food.category?.toLowerCase()} that will delight your taste buds`}
-              </p>
-              <div className="food-meta">
-                <div className="meta-item">
-                  <FaClock className="meta-icon" />
-                  <span>{food.preparationTime || '30 mins'}</span>
-                </div>
-                <div className="meta-item">
-                  <FaUserFriends className="meta-icon" />
-                  <span>{food.servings || '4'} servings</span>
-                </div>
-                <div className="meta-item">
-                  <FaFire className="meta-icon" />
-                  <span>{food.calories || '320'} cal</span>
-                </div>
-                <div className="meta-item rating">
-                  <FaStar className="meta-icon" />
-                  <span>{food.rating || '4.8'}</span>
-                </div>
-                {food.difficulty && (
-                  <div 
-                    className="meta-item difficulty"
-                    style={{color: getDifficultyColor(food.difficulty)}}
-                  >
-                    <span>•</span>
-                    {food.difficulty}
-                  </div>
-                )}
+              <div className="meta-item">
+                <FaUserFriends className="meta-icon" />
+                <span>{food.servings || '4'} servings</span>
               </div>
+              <div className="meta-item">
+                <FaFire className="meta-icon" />
+                <span>{food.calories || '320'} cal</span>
+              </div>
+              <div className="meta-item rating">
+                <FaStar className="meta-icon" />
+                <span>{food.rating || '4.8'}</span>
+              </div>
+              {food.difficulty && (
+                <div
+                  className="meta-item difficulty"
+                  style={{color: getDifficultyColor(food.difficulty)}}
+                >
+                  <span>•</span>
+                  {food.difficulty}
+                </div>
+              )}
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="food-detail-container">
         {/* Main Content */}
         <div className="food-content">
           <div className="content-wrapper">
