@@ -1,7 +1,8 @@
 const Slot = require('../models/Slot');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
-const stripe = require('stripe')('sk_test_51PM6qtRwUTaEqzUvt4NK6m6IIecqXl8tkrlrxEiZ7cu2GVfpyteslhlryQALGUJEYjTNz3jdMaTbJ7VrxBIGles300dRauynNO');
+require("dotenv").config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const getSlotTime = (slotNumber) => {
   const slotTimes = {

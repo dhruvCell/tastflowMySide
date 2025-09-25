@@ -9,7 +9,6 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const { toWords } = require('number-to-words');
 const { generateInvoiceEmailHTML } = require('../utils/emailTemplates');
-const JWT_SECTRET = 'dhruvdhruvdhruv';
 
 // Google OAuth login handler
 const googleAuth = async (req, res) => {
@@ -20,7 +19,7 @@ const googleAuth = async (req, res) => {
                 id: user.id,
             }
         };
-        const authtoken = jwt.sign(data, JWT_SECTRET);
+        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
         res.redirect(`http://localhost:3000/auth/callback?token=${authtoken}`);
     } catch (error) {
         console.error(error.message);
@@ -58,7 +57,7 @@ const createUser = async (req, res) => {
             }
         };
 
-        const authtoken = jwt.sign(data, JWT_SECTRET);
+        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
         success = true;
         res.json({ success, authtoken });
     } catch (error) {
@@ -98,7 +97,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
         const data = { user: { id: user.id, role: user.role } };
-        const authtoken = jwt.sign(data, JWT_SECTRET);
+        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
         success = true;
         res.json({ success, authtoken });
     } catch (error) {
