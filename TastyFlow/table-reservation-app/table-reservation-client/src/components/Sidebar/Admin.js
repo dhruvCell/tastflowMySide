@@ -38,7 +38,7 @@ const Admin = ({showAlert}) => {
       getUserDetails();
     }, []);
   return (
-    <div style={{backgroundColor:"#1B1C1F",display:"flex"}}>
+    <div style={{backgroundColor:"#1B1C1F",display:"flex",borderTop:"1.5px solid #a9a9a9"}}>
       <Sidebar showAlert={showAlert}/>
       <div style={{color:"white",width:"100%",borderTop:"1.5px solid #a9a9a9"}}>
         <h1 style={{textAlign:"center",marginTop:"17rem"}}>Welcome to Admin Panel</h1>
