@@ -6,6 +6,11 @@ import { useParams } from 'react-router-dom';
 import { useSocket } from '../../context/SocketContext';
 import './TableShow.css';
 import { message } from 'antd';
+import { Howl } from 'howler';
+const deleteTables = new Howl({ src: ['/sounds/delete.mp3'] });
+const canceleButton = new Howl({ src: ['/sounds/cancel.mp3'] });
+const addTableSound = new Howl({ src: ['/sounds/submit.mp3'] });
+const clickDelete = new Howl({ src: ['/sounds/click.mp3'] });
 
 function SlotTable(props) {
   const { slotNumber } = useParams();
@@ -118,6 +123,7 @@ function SlotTable(props) {
         capacity: tableCapacity,
       });
       message.success('Table added');
+      addTableSound.play();
       fetchTables();
       setTableNumber('');
       setTableCapacity('');
@@ -139,6 +145,7 @@ function SlotTable(props) {
       await axios.delete(`http://localhost:5000/api/slot/${slotNumber}/delete`, { 
         data: { number: tableToDelete }
       });
+      deleteTables.play();
       message.success('Table deleted successfully');
       fetchTables();
     } catch (error) {
@@ -248,7 +255,10 @@ function SlotTable(props) {
               <div className="modal-footer">
                 <button 
                   className="modal-cancel-btn"
-                  onClick={() => setShowDeleteModal(false)}
+                  onClick={() => {
+                    setShowDeleteModal(false)
+                    canceleButton.play();
+                  }}
                 >
                   Cancel
                 </button>
@@ -424,7 +434,10 @@ function SlotTable(props) {
                       )}
                       
                       <button
-                        onClick={() => confirmDelete(table.number)}
+                        onClick={() => {
+                          confirmDelete(table.number)
+                          clickDelete.play();
+                        }}
                         className='delete-button'
                       >
                         Delete

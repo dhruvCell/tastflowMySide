@@ -62,33 +62,33 @@ const io = socketIo(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('New client connected:', socket.id);
+  // console.log('New client connected:', socket.id);
 
   socket.on('joinRoom', (room) => {
     socket.join(room);
-    console.log(`Socket ${socket.id} joined room ${room}`);
+    // console.log(`Socket ${socket.id} joined room ${room}`);
   });
 
   socket.on('joinFoodRoom', () => {
     socket.join('foodUpdates');
-    console.log(`Socket ${socket.id} joined foodUpdates room`);
+    // console.log(`Socket ${socket.id} joined foodUpdates room`);
   });
 
   socket.on('joinAdminMessageRoom', () => {
     socket.join('adminMessages');
-    console.log(`Socket ${socket.id} joined adminMessages room`);
+    // console.log(`Socket ${socket.id} joined adminMessages room`);
   });
 
   socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
+    // console.log('Client disconnected:', socket.id);
   });
 
   socket.on('joinUserRoom', (userId) => {
     socket.join(`user_${userId}`);
-    console.log(`Socket ${socket.id} joined user room ${userId}`);
+    // console.log(`Socket ${socket.id} joined user room ${userId}`);
   });
   socket.on('joinUserRoom', (userId) => {
-    socket.join(`user_${userId}`);
+    // socket.join(`user_${userId}`);
   });
 });
 

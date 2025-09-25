@@ -11,8 +11,8 @@ import { Howl } from 'howler';
 
 const stripePromise = loadStripe('pk_test_51PM6qtRwUTaEqzUvS6OJGM3YihHTBzBe1X4lPiFacZgFvyHU6E27K7n9qzkmzJoi2V0JH66T7fCpL9MgQCVYerTD00lU9wNdOf');
 
-const reserveSound = new Howl({ src: ['/sounds/success.mp3'] });
-const unreserveSound = new Howl({ src: ['/sounds/success.mp3'] });
+const reserveSound = new Howl({ src: ['/sounds/submit.mp3'] });
+const unreserveSound = new Howl({ src: ['/sounds/submit.mp3'] });
 
 const TableComponent = ({ showAlert }) => {
   const [tables, setTables] = useState([]);

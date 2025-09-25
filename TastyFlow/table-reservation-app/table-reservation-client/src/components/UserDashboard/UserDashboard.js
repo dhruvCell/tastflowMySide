@@ -3,6 +3,9 @@ import { toast } from 'react-toastify';
 import Sidebar from '../../components/Sidebar/Sidebar'
 import "./UserDashboard.css"
 import { useNavigate, useParams } from 'react-router-dom';
+import { Howl } from 'howler';
+
+const clickButton = new Howl({ src: ['/sounds/click.mp3'] });
 
 const UserDashBoard = () => {
     const { userId } = useParams();
@@ -35,9 +38,11 @@ const UserDashBoard = () => {
         }, [userId]);
 
         const handleReviewsClick = () => {
+            clickButton.play();
             navigate(`/admin/users/reviews/${userId}`); // Navigate to the reviews page
         };
         const handleInvoiceClick = () => {
+          clickButton.play();
           navigate(`/admin/users/invoice/${userId}`); // Navigate to the invoice page
       };
   return (

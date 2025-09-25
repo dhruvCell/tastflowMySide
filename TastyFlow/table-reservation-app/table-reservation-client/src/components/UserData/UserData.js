@@ -11,6 +11,8 @@ import {
   faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import './UserData.css';
+import { Howl } from 'howler';
+const clickDetails = new Howl({ src: ['/sounds/click.mp3'] });
 
 const UserData = () => {
   const [users, setUsers] = useState([]);
@@ -129,7 +131,10 @@ const UserData = () => {
                   <div className="ud-email">{user.email}</div>
                   <button
                     className="ud-action-btn"
-                    onClick={() => navigate(`/admin/user/dash-board/${user._id}`)}
+                    onClick={() => {
+                      clickDetails.play();
+                      navigate(`/admin/user/dash-board/${user._id}`);
+                    }}
                   >
                     <FontAwesomeIcon icon={faCircleInfo} />
                     <span>Details</span>

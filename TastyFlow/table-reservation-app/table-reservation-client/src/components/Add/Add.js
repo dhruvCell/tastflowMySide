@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { Howl } from 'howler';
 import { useFood } from '../../context/FoodContext';
+const errorSound = new Howl({ src: ['/sounds/error.mp3'] });
 const AddItem = new Howl({ src: ['/sounds/submit.mp3'] });
 
 const Add = () => {
@@ -30,11 +31,6 @@ const Add = () => {
     similarDishes: [],
   });
 
-  const [reviewInput, setReviewInput] = useState({
-    text: '',
-    author: '',
-    rating: 0,
-  });
 
   const { fetchFoodList } = useFood();
 
@@ -60,33 +56,6 @@ const Add = () => {
         [name]: Number(value),
       },
     }));
-  };
-
-  const onReviewChangeHandler = (event) => {
-    const { name, value } = event.target;
-    setReviewInput((prevReview) => ({
-      ...prevReview,
-      [name]: value,
-    }));
-  };
-
-  const addReview = () => {
-    if (reviewInput.text && reviewInput.author && reviewInput.rating > 0) {
-      const newReview = {
-        text: reviewInput.text,
-        author: reviewInput.author,
-        rating: Number(reviewInput.rating),
-        date: new Date().toISOString(),
-      };
-      setData((prevData) => ({
-        ...prevData,
-        reviews: [...prevData.reviews, newReview],
-      }));
-      setReviewInput({ text: '', author: '', rating: 0 });
-      toast.success('Review added successfully!');
-    } else {
-      toast.error('Please fill all review fields and provide a valid rating.');
-    }
   };
 
   const onSubmitHandler = async (event) => {
@@ -139,6 +108,7 @@ const Add = () => {
       }
     } catch (error) {
       toast.error('An error occurred while adding the food item.');
+      errorSound.play();
     }
   };
 

@@ -241,7 +241,7 @@
 }
 
 .ud-action-btn:hover {
-  background: var(--secondary);
+  background-color: var(--primary-dark);
 }
 
 /* Empty State */
