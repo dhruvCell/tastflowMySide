@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaSpinner, FaCheckCircle, FaClock, FaUserFriends, FaFire, FaStar, FaUtensils, FaLeaf, FaHeart } from 'react-icons/fa';
+import { FaCheckCircle, FaClock, FaUtensils, FaLeaf, FaHeart } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './FoodDetail.css';
@@ -65,15 +65,6 @@ const FoodDetail = () => {
       protein: Math.round((protein / total) * 100),
       fat: Math.round((fat / total) * 100)
     };
-  };
-
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty?.toLowerCase()) {
-      case 'easy': return '#27ae60';
-      case 'medium': return '#f39c12';
-      case 'hard': return '#e74c3c';
-      default: return '#95a5a6';
-    }
   };
 
   if (loading) {
@@ -312,17 +303,6 @@ const FoodDetail = () => {
                     <div className="info-content">
                       <strong>Origin</strong>
                       <span>{food.origin}</span>
-                    </div>
-                  </div>
-                )}
-                {food.difficulty && (
-                  <div className="info-card">
-                    <div className="info-icon">⚡</div>
-                    <div className="info-content">
-                      <strong>Difficulty</strong>
-                      <span style={{color: getDifficultyColor(food.difficulty)}}>
-                        {food.difficulty}
-                      </span>
                     </div>
                   </div>
                 )}
