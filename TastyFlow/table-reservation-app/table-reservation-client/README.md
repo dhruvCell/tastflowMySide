@@ -67,7 +67,6 @@ A modern, responsive React frontend for the TastyFlow table reservation and food
 
 3. Create a `.env` file in the root directory and add the following environment variables:
    ```env
-   REACT_APP_API_BASE_URL=http://localhost:5000
    REACT_APP_STRIPE_CLIENT_KEY=your_stripe_publishable_key
    ```
 
