@@ -9,7 +9,13 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const { toWords } = require('number-to-words');
 const { generateInvoiceEmailHTML } = require('../utils/emailTemplates');
-
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD
+}
+});
 // Google OAuth login handler
 const googleAuth = async (req, res) => {
     try {
@@ -200,20 +206,32 @@ const forgotPassword = async (req, res) => {
         user.otpExpiry = formattedExpiry;
         await user.save();
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
-
         const mailOptions = {
-            from: 'tastyflow01@gmail.com',
+            from: process.env.EMAIL,
             to: email,
-            subject: 'Reset Password from TastyFlow',
-            text: `Your OTP is ${otp}`
-        };
+            subject: "Password Reset Request – TastyFlow",
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+                <h2 style="color: #e67e22;">Password Reset Verification</h2>
+                <p>Dear User,</p>
+                <p>We received a request to reset the password for your TastyFlow account. To proceed, please use the One-Time Password (OTP) provided below:</p>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                  <span style="font-size: 22px; font-weight: bold; color: #2c3e50; background: #f4f4f4; padding: 10px 20px; border-radius: 8px; display: inline-block;">
+                    ${otp}
+                  </span>
+                </div>
+                
+                <p>This OTP is valid for the next <strong>10 minutes</strong>. Please do not share it with anyone for your account’s security.</p>
+                
+                <p>If you did not request a password reset, kindly ignore this email. Your account will remain secure.</p>
+                
+                <p style="margin-top: 25px;">Best regards,</p>
+                <p><strong>The TastyFlow Support Team</strong></p>
+              </div>
+            `
+          };
+          
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -330,20 +348,33 @@ const signupOtpSend = async (req, res) => {
         });
         await user.save();
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
 
         const mailOptions = {
-            from: 'tastyflow01@gmail.com',
+            from: process.env.EMAIL,
             to: email,
-            subject: 'Verify your email for TastyFlow Signup',
-            text: `Your OTP for signup is ${otp}. It expires in 1 minute.`
-        };
+            subject: 'Email Verification – TastyFlow Signup',
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+                <h2 style="color: #3498db; text-align: center;">Verify Your Email</h2>
+                <p>Dear User,</p>
+                <p>Thank you for signing up with TastyFlow! To complete your registration, please use the One-Time Password (OTP) below:</p>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                  <span style="font-size: 22px; font-weight: bold; color: #2c3e50; background: #f4f4f4; padding: 10px 20px; border-radius: 8px; display: inline-block;">
+                    ${otp}
+                  </span>
+                </div>
+                
+                <p>This OTP will expire in <strong>1 minute</strong>. Please enter it promptly to verify your email address.</p>
+                
+                <p>If you did not initiate this signup, you may safely ignore this email.</p>
+                
+                <p style="margin-top: 25px;">Best regards,</p>
+                <p><strong>The TastyFlow Team</strong></p>
+              </div>
+            `
+          };
+          
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -476,18 +507,26 @@ const addFoodToUser = async (req, res) => {
         const mailOptions = {
             from: 'tastyflow01@gmail.com',
             to: user.email,
-            subject: `TastyFlow Invoice of ${user.name}`,
-            html: emailHTML,
-        };
-
-        // Send the email using a nodemailer transporter
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
+            subject: `TastyFlow Invoice – ${user.name}`,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; color: #333; border: 1px solid #eee; border-radius: 8px; padding: 20px; background-color: #fafafa;">
+                <h2 style="color: #e74c3c; text-align: center;">TastyFlow Invoice</h2>
+                <p>Dear ${user.name},</p>
+                <p>Thank you for your recent transaction with TastyFlow. Please find the details of your invoice below:</p>
+          
+                ${emailHTML} <!-- your dynamic invoice content -->
+          
+                <p style="margin-top: 20px;">
+                  If you have any questions regarding this invoice or need assistance, please contact us at 
+                  <a href="mailto:tastyflow01@gmail.com" style="color: #e74c3c;">tastyflow01@gmail.com</a> or call us at <strong>+91 1234567890</strong>.
+                </p>
+          
+                <p style="margin-top: 25px;">Warm regards,</p>
+                <p style="font-weight: bold; color: #e74c3c;">The TastyFlow Team</p>
+              </div>
+            `
+          };
+          
 
         // Send the email
         await transporter.sendMail(mailOptions);

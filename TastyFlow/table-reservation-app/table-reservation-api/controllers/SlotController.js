@@ -53,7 +53,7 @@ const reserveSlot = async (req, res) => {
     const { number, paymentIntentId } = req.body;
     const userId = req.user.id;
     const slotNumber = parseInt(req.params.slotNumber);
-    
+
     const slot = await Slot.findOne({ slotNumber, number });
     if (!slot) return res.status(404).json({ message: "Slot not found" });
     if (slot.reserved) return res.status(400).json({ message: "Slot is already reserved" });
@@ -80,14 +80,41 @@ const reserveSlot = async (req, res) => {
     user.payments.push(paymentData);
     await user.save();
 
-    // Send email
-    const mailOptions = {
-      from: "tastyflow01@gmail.com",
+    // === Send email to user ===
+    await transporter.sendMail({
+      from: process.env.EMAIL,
       to: user.email,
-      subject: "Slot Reservation Confirmation",
-      text: `Your reservation for Table ${slot.number} (${getSlotTime(slotNumber)}) has been confirmed. Thank you!`,
-    };
-    transporter.sendMail(mailOptions);
+      subject: "Reservation Confirmation – TastyFlow",
+      text: `Dear ${user.name || "Valued Guest"},
+    
+We are delighted to confirm your reservation with TastyFlow. Please find your booking details below:
+
+📅 Reservation Details:
+- Table Number: ${slot.number}
+- Time Slot: ${getSlotTime(slotNumber)}
+
+We kindly request you to arrive 10–15 minutes before your scheduled time to ensure a smooth seating experience.  
+If you have any special requests or require changes to your booking, feel free to reach out to us at ${process.env.EMAIL}.
+
+Thank you for choosing TastyFlow. We look forward to serving you a memorable dining experience!
+
+Warm regards,  
+The TastyFlow Team`
+    });
+
+    // === Send email to admin ===
+    await transporter.sendMail({
+      from: process.env.EMAIL, // show user as sender
+      to: process.env.EMAIL,
+      subject: "New Reservation – TastyFlow",
+      html: `
+        <h3>Admin,</h3>
+        <p>User <b>${user.name}</b> (${user.email}) has made a reservation.</p>
+        <p><b>Table:</b> ${slot.number}</p>
+        <p><b>Slot:</b> ${getSlotTime(slotNumber)}</p>
+        <p><b>Reservation ID:</b> ${slot._id}</p>
+      `
+    });
 
     const populatedSlot = await Slot.findById(slot._id).populate({
       path: 'reservedBy',
@@ -95,9 +122,9 @@ const reserveSlot = async (req, res) => {
     });
 
     const io = req.app.get('io');
-    io.to(`slot_${slotNumber}`).emit('slotUpdated', { 
-      action: 'reserved', 
-      slotNumber, 
+    io.to(`slot_${slotNumber}`).emit('slotUpdated', {
+      action: 'reserved',
+      slotNumber,
       tableNumber: number,
       reservedBy: {
         _id: user._id,
@@ -107,7 +134,6 @@ const reserveSlot = async (req, res) => {
       slot: populatedSlot
     });
 
-    // Emit new reservation to user's room
     io.to(`user_${userId}`).emit('newReservation', {
       reservation: {
         reservationId: slot._id,
@@ -116,14 +142,15 @@ const reserveSlot = async (req, res) => {
       }
     });
 
-    res.status(200).json({ 
-      message: "Slot reserved successfully", 
-      slot: populatedSlot 
+    res.status(200).json({
+      message: "Slot reserved successfully",
+      slot: populatedSlot
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 const unreserveSlot = async (req, res) => {
   try {
@@ -131,7 +158,7 @@ const unreserveSlot = async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
     const slotNumber = parseInt(req.params.slotNumber);
-    
+    const user = await User.findById(userId);
     const slot = await Slot.findOne({ slotNumber, number });
     if (!slot) return res.status(404).json({ message: "Slot not found" });
 
@@ -168,11 +195,61 @@ const unreserveSlot = async (req, res) => {
       reservationId: slot._id
     });
 
+    // --- Email Notification ---
+    if (reservedByUser) {
+      
+
+      // 📩 Notify the USER
+      const userMailOptions = {
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: "Reservation Cancellation Confirmation – TastyFlow",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+            <h2 style="color: #ff6b6b; text-align: center;">Reservation Cancelled</h2>
+            <p>Dear ${reservedByUser.name || "Guest"},</p>
+            <p>This is to confirm that your reservation has been successfully <strong>cancelled</strong> as per your request.</p>
+            <h3>Cancelled Reservation Details</h3>
+            <ul>
+              <li><strong>Table:</strong> ${number}</li>
+              <li><strong>Time Slot:</strong> ${getSlotTime(slotNumber)}</li>
+            </ul>
+            <p>You may book another table anytime using our reservation system. If you need help, contact us at tastyflow01@gmail.com.</p>
+            <p>Warm regards,<br><strong>The TastyFlow Team</strong></p>
+          </div>
+        `
+      };
+
+      // 📩 Notify the ADMIN
+      const adminMailOptions = {
+        from: process.env.EMAIL,
+        to: process.env.EMAIL, // admin email
+        subject: `User Cancelled Reservation – Table ${number}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+            <h2 style="color: #ff6b6b; text-align: center;">Reservation Cancelled by User</h2>
+            <p><strong>User:</strong> ${reservedByUser.name || "Unknown"} (${reservedByUser.email})</p>
+            <h3>Cancelled Reservation Details</h3>
+            <ul>
+              <li><strong>Table:</strong> ${number}</li>
+              <li><strong>Time Slot:</strong> ${getSlotTime(slotNumber)}</li>
+            </ul>
+            <p>This reservation was <strong>cancelled directly by the user</strong>. Please verify payment adjustments in the system if necessary.</p>
+            <p>Best regards,<br><strong>TastyFlow System</strong></p>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(userMailOptions);
+      await transporter.sendMail(adminMailOptions);
+    }
+
     res.status(200).json({ message: "Slot unreserved successfully", slot });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 const adminUnreserveSlot = async (req, res) => {
   try {
@@ -185,7 +262,7 @@ const adminUnreserveSlot = async (req, res) => {
 
     const reservedByUser = await User.findById(slot.reservedBy);
     if (reservedByUser) {
-      // Update the payment record to mark as deducted
+      // Mark payment as deducted
       reservedByUser.payments = reservedByUser.payments.map(payment => {
         if (String(payment.reservationId) === String(slot._id)) {
           return { ...payment, deducted: true };
@@ -207,11 +284,49 @@ const adminUnreserveSlot = async (req, res) => {
       slot: slot
     });
 
-    // Emit event to update reservations dropdown
+    // Notify user socket
     if (reservedByUser) {
       io.to(`user_${reservedByUser._id}`).emit('reservationRemoved', {
         reservationId: slot._id
       });
+
+      const mailOptions = {
+        from: "tastyflow01@gmail.com",
+        to: reservedByUser.email,
+        subject: "Reservation Cancellation – TastyFlow (Admin Assisted)",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+            <h2 style="color: #ff6b6b; text-align: center;">Reservation Cancelled</h2>
+            <p style="font-size: 16px; color: #333;">Dear ${reservedByUser.name || "Guest"},</p>
+            
+            <p style="font-size: 15px; color: #555; line-height: 1.6;">
+              We would like to inform you that your reservation has been <strong>cancelled by our administrator</strong>.
+            </p>
+
+            <h3 style="color: #333; margin-top: 20px;">Cancelled Reservation Details</h3>
+            <ul style="font-size: 15px; color: #555; line-height: 1.6;">
+              <li><strong>Table:</strong> ${number}</li>
+              <li><strong>Time Slot:</strong> ${getSlotTime(slotNumber)}</li>
+            </ul>
+
+            <p style="font-size: 15px; color: #555; line-height: 1.6;">
+              Please note that any applicable payment adjustment has been marked in your account.  
+              If you wish to make a new reservation, kindly visit our website or contact us directly.
+            </p>
+
+            <p style="font-size: 15px; color: #555; line-height: 1.6;">
+              For any questions or further assistance, you may reach us at 
+              <a href="mailto:tastyflow01@gmail.com" style="color: #ff6b6b; text-decoration: none;">tastyflow01@gmail.com</a> 
+              or call <strong>+91 1234567890</strong>.
+            </p>
+
+            <p style="margin-top: 30px; font-size: 15px; color: #333;">Warm regards,</p>
+            <p style="font-size: 16px; font-weight: bold; color: #ff6b6b;">The TastyFlow Team</p>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
     }
 
     res.status(200).json({ message: 'Slot unreserved by admin successfully', slot });
@@ -367,31 +482,46 @@ const changeTable = async (req, res) => {
 
     // Send email notification to user
     const mailOptions = {
-      from: "tastyflow01@gmail.com",
+      from: process.env.EMAIL,
       to: user.email,
-      subject: "Your Table Reservation Has Been Changed",
+      subject: "Reservation Update – Your Table Has Been Changed",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Table Reservation Update</h2>
-          <p>Dear ${user.name},</p>
-          <p>Your table reservation has been updated by the restaurant admin.</p>
-          <p><strong>Original Reservation:</strong></p>
-          <ul>
-            <li>Table: ${oldTableNumber}</li>
-            <li>Time Slot: ${getSlotTime(slotNumber)}</li>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+          <h2 style="color: #ff6b6b; text-align: center;">Reservation Update</h2>
+          <p style="font-size: 16px; color: #333;">Dear ${user.name || "Valued Guest"},</p>
+          
+          <p style="font-size: 15px; color: #555; line-height: 1.6;">
+            We would like to inform you that your reservation has been modified by our restaurant administrator to better accommodate your dining experience. Please review the updated details below:
+          </p>
+    
+          <h3 style="color: #333; margin-top: 20px;">Original Reservation</h3>
+          <ul style="font-size: 15px; color: #555; line-height: 1.6;">
+            <li><strong>Table:</strong> ${oldTableNumber}</li>
+            <li><strong>Time Slot:</strong> ${getSlotTime(slotNumber)}</li>
           </ul>
-          <p><strong>New Reservation:</strong></p>
-          <ul>
-            <li>Table: ${newTableNumber}</li>
-            <li>Time Slot: ${getSlotTime(slotNumber)}</li>
+    
+          <h3 style="color: #333; margin-top: 20px;">New Reservation</h3>
+          <ul style="font-size: 15px; color: #555; line-height: 1.6;">
+            <li><strong>Table:</strong> ${newTableNumber}</li>
+            <li><strong>Time Slot:</strong> ${getSlotTime(slotNumber)}</li>
           </ul>
-          <p>If you have any questions or concerns, please contact us at tastyflow01@gmail.com or call us at +91 1234567890.</p>
-          <p>Thank you for choosing our restaurant!</p>
-          <p style="margin-top: 30px;">Best regards,</p>
-          <p><strong>The TastyFlow Team</strong></p>
+    
+          <p style="font-size: 15px; color: #555; line-height: 1.6;">
+            If you have any questions, special requests, or need further assistance, please feel free to reach us at 
+            <a href="mailto:tastyflow01@gmail.com" style="color: #ff6b6b; text-decoration: none;">tastyflow01@gmail.com</a> 
+            or call us directly at <strong>+91 1234567890</strong>.
+          </p>
+    
+          <p style="font-size: 15px; color: #555; line-height: 1.6;">
+            Thank you for choosing <strong>TastyFlow</strong>. We look forward to serving you and ensuring an exceptional dining experience.
+          </p>
+    
+          <p style="margin-top: 30px; font-size: 15px; color: #333;">Warm regards,</p>
+          <p style="font-size: 16px; font-weight: bold; color: #ff6b6b;">The TastyFlow Team</p>
         </div>
       `
     };
+    
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -467,11 +597,25 @@ const adminReserveSlot = async (req, res) => {
 
     // Send email
     const mailOptions = {
-      from: "tastyflow01@gmail.com",
+      from: process.env.EMAIL,
       to: user.email,
-      subject: "Slot Reservation Confirmation - Admin Assisted",
-      text: `Your reservation for Table ${slot.number} (${getSlotTime(slotNumber)}) has been confirmed by our admin. Thank you!`,
-    };
+      subject: "Reservation Confirmation – Assisted by Admin",
+      text: `Dear ${user.name || "Valued Guest"},
+    
+    We are pleased to inform you that your reservation at TastyFlow has been successfully confirmed by our administrator.  
+    
+    📅 Reservation Details:
+    - Table Number: ${slot.number}
+    - Time Slot: ${getSlotTime(slotNumber)}
+    
+    Our team looks forward to hosting you and ensuring you have a delightful dining experience. Please arrive 10–15 minutes prior to your reservation time to allow for a smooth seating process.  
+    Should you have any special requests or require further assistance, feel free to contact us at tastyflow01@gmail.com.  
+    Thank you for choosing TastyFlow. We are excited to serve you and make your visit memorable.  
+    
+    Warm regards,  
+    The TastyFlow Team
+    `
+    };    
     transporter.sendMail(mailOptions);
 
     const populatedSlot = await Slot.findById(slot._id).populate({
