@@ -166,6 +166,8 @@ function SlotTable(props) {
         { headers: { 'auth-token': localStorage.getItem('token') } }
       );
       message.success('Table unreserved');
+      // Fallback: refetch tables to ensure UI updates immediately
+      await fetchTables();
     } catch (error) {
       console.error('Error unreserving table:', error);
       message.error('Error unreserving table');
@@ -178,10 +180,12 @@ function SlotTable(props) {
     try {
       setLoadingTable(number);
       await axios.post(
-        `http://localhost:5000/api/slot/${slotNumber}/toggle-status`, 
-        { number }, 
+        `http://localhost:5000/api/slot/${slotNumber}/toggle-status`,
+        { number },
         { headers: { 'auth-token': localStorage.getItem('token') } }
       );
+      // Fallback: refetch tables to ensure UI updates immediately
+      await fetchTables();
     } catch (error) {
       console.error('Error toggling table status:', error);
       message.error('Error updating table status');

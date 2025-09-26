@@ -269,10 +269,6 @@ const toggleTableStatus = async (req, res) => {
   try {
     const { number } = req.body;
     const slotNumber = parseInt(req.params.slotNumber);
-    
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Only admins can toggle table status' });
-    }
 
     const slot = await Slot.findOne({ slotNumber, number });
     if (!slot) return res.status(404).json({ message: 'Slot not found' });
