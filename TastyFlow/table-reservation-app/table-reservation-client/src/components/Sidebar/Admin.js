@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
-import { useNavigate } from 'react-router-dom';
 
 const Admin = ({showAlert}) => {
-  const [userDetails, setUserDetails] = useState({ name: "", email: "", id: "" }); // State to hold the user's details
-    let navigate = useNavigate();
+  const [, setUserDetails] = useState({ name: "", email: "", id: "" });
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem("token");
