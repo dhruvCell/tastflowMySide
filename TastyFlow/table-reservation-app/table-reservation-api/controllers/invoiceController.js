@@ -55,6 +55,7 @@ const createInvoice = async (req, res) => {
         const reservedSlot = await findReservedSlot(reservationId);
         if (reservedSlot) {
           reservedTableInfo = {
+            status: payment.status,
             tableNumber: reservedSlot.tableNumber,
             slotTime: getSlotTime(reservedSlot.slotNumber),
             date: reservedSlot.date,
@@ -80,6 +81,7 @@ const createInvoice = async (req, res) => {
         const reservedSlot = await findReservedSlot(reservationId);
         if (reservedSlot) {
           reservedTableInfo = {
+            status: payment.status,
             tableNumber: reservedSlot.tableNumber,
             slotTime: getSlotTime(reservedSlot.slotNumber),
             date: reservedSlot.date,

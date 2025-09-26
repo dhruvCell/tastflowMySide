@@ -60,6 +60,7 @@ const UserFoodPage = () => {
         reservationId: payment.reservationId,
         tableNumber: payment.tableNumber,
         slotTime: payment.slotTime,
+        status: payment.status
       })));
     };
 

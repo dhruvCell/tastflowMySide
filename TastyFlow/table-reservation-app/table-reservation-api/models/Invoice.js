@@ -50,6 +50,7 @@ const invoiceSchema = new mongoose.Schema(
       tableNumber: { type: Number },
       slotTime: { type: String },
       date: { type: Date },
+      status: { type: String },
     },
   },
   { timestamps: true }

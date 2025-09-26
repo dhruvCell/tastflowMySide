@@ -1,232 +1,239 @@
-# TastyFlow - Table Reservation API
+# TastyFlow Backend API
 
-A robust Node.js/Express backend API for the TastyFlow table reservation and food ordering system. This API provides comprehensive endpoints for user management, food ordering, table reservations, invoicing, and real-time communication.
+A comprehensive Node.js/Express backend API for the TastyFlow table reservation and food ordering system.
 
 ## Features
 
-### Core Features
-- **User Management**: Registration, authentication, OAuth (Google), profile management
-- **Food Management**: CRUD operations for menu items, categories, and inventory
-- **Table Reservations**: Slot management, booking system with availability tracking
-- **Order Processing**: Food ordering, cart management, payment processing
-- **Invoice Generation**: PDF invoice creation, email delivery, payment tracking
-- **Real-time Messaging**: Socket.io integration for live chat between users and admins
-- **Admin Dashboard**: Comprehensive analytics and management tools
-
-### Technical Features
-- **Authentication & Authorization**: JWT tokens, Passport.js, role-based access control
-- **Payment Integration**: Stripe payment processing with webhooks
-- **File Uploads**: Multer for image uploads (food items, user profiles)
-- **Email & SMS Notifications**: Nodemailer and Twilio integration
-- **Scheduled Tasks**: Node-cron for automated cleanup and notifications
-- **Real-time Communication**: Socket.io for instant messaging
-- **Data Validation**: Express-validator for input sanitization
-- **Security**: CORS, session management, password hashing with bcrypt
+- **User Authentication & Authorization**: JWT-based authentication with role-based access control (User/Admin)
+- **Table Reservation System**: Real-time table booking with slot management
+- **Food Ordering**: Complete menu management with categories and pricing
+- **Invoice Management**: Automated invoice generation with PDF support
+- **Payment Integration**: Stripe payment processing for reservations and orders
+- **Real-time Communication**: Socket.io for live updates on reservations and orders
+- **Email Notifications**: Automated email confirmations and updates
+- **Admin Dashboard**: Comprehensive admin panel for managing users, tables, food, and orders
 
 ## Tech Stack
 
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Database**: MongoDB with Mongoose ODM
-- **Authentication**: Passport.js (Local & Google OAuth)
+- **Authentication**: JWT (JSON Web Tokens) with Passport.js
 - **Real-time**: Socket.io
 - **Payments**: Stripe
-- **File Uploads**: Multer
 - **Email**: Nodemailer
-- **Scheduling**: Node-cron
-- **Validation**: Express-validator
-- **Security**: bcryptjs, CORS, express-session
+- **File Upload**: Multer
 - **PDF Generation**: PDFKit
-- **Development**: Nodemon
-
-## Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn
+- **Validation**: Express-validator
+- **Security**: bcryptjs for password hashing, CORS
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone the repository**
    ```bash
    git clone <repository-url>
    cd table-reservation-app/table-reservation-api
    ```
 
-2. Install dependencies:
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. Create a `.env` file in the root directory and configure the following environment variables:
+3. **Environment Setup**
+   Create a `.env` file in the root directory with the following variables:
    ```env
-   PORT=5000
+   # Database
    MONGO_URI=mongodb://localhost:27017/tastyflow
-   SESSION_SECRET=your_session_secret_key
+
+   # JWT
    JWT_SECRET=your_jwt_secret_key
+
+   # Email Configuration
+   EMAIL=your_email@gmail.com
+   EMAIL_PASSWORD=your_app_password
 
    # Stripe
    STRIPE_SECRET_KEY=your_stripe_secret_key
 
-   # Google OAuth
+   # Vonage (SMS - optional)
+   VONAGE_API_KEY=your_vonage_api_key
+   VONAGE_API_SECRET=your_vonage_api_secret
+
+   # Twilio (SMS - optional)
+   TWILIO_ACCOUNT_SID=your_twilio_account_sid
+   TWILIO_AUTH_TOKEN=your_twilio_auth_token
+   TWILIO_PHONE_NUMBER=your_twilio_phone_number
+
+   # Google OAuth (optional)
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-   # Email (Nodemailer)
-   EMAIL_USER=your_email@gmail.com
-   EMAIL_PASS=your_email_password
+   # Port
+   PORT=5000
    ```
 
-4. Start the development server:
+4. **Start MongoDB**
+   Make sure MongoDB is running on your system.
+
+5. **Run the server**
    ```bash
+   # Development mode with nodemon
    npm run dev
+
+   # Production mode
+   npm start
    ```
-
-   The API will be available at `http://localhost:5000`
-
-## Available Scripts
-
-- `npm run dev` - Starts the server with nodemon (development)
-- `npm start` - Starts the server with node (production)
-- `npm test` - Runs tests (currently not implemented)
-
-## Project Structure
-
-```
-├── controllers/         # Business logic controllers
-│   ├── userController.js    # User management
-│   ├── foodController.js    # Food/menu management
-│   ├── slotController.js    # Reservation slots
-│   └── invoiceController.js # Invoice generation
-├── models/             # MongoDB schemas
-│   ├── User.js         # User model
-│   ├── Food.js         # Food item model
-│   ├── Slot.js         # Reservation slot model
-│   ├── Invoice.js      # Invoice model
-│   └── Message.js      # Chat message model
-├── routes/             # API route definitions
-│   ├── userRoute.js    # User-related endpoints
-│   ├── foodRoute.js    # Food-related endpoints
-│   ├── slotRoutes.js   # Reservation endpoints
-│   ├── InvoiceRoute.js # Invoice endpoints
-│   └── messageRoutes.js # Messaging endpoints
-├── middleware/         # Custom middleware
-│   └── fetchUser.js    # JWT authentication middleware
-├── utils/              # Utility functions
-│   ├── pdfInvoiceGenerator.js # PDF creation
-│   └── emailTemplates.js      # Email templates
-├── uploads/            # File upload directory
-├── passportConfig.js   # Passport authentication setup
-├── server.js           # Main server file
-└── package.json        # Dependencies and scripts
-```
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/users/register` - User registration
-- `POST /api/users/login` - User login
-- `POST /api/users/getuser` - Get user profile
-- `POST /api/users/forgot-password` - Password reset request
-- `POST /api/users/reset-password` - Password reset
-- `GET /auth/google` - Google OAuth login
-- `GET /auth/google/callback` - Google OAuth callback
+### Authentication Routes (`/api/auth`)
+- `POST /register` - User registration
+- `POST /login` - User login
+- `GET /google` - Google OAuth login
+- `GET /google/callback` - Google OAuth callback
 
-### Food Management
-- `GET /api/food` - Get all food items
-- `POST /api/food` - Add new food item (Admin)
-- `PUT /api/food/:id` - Update food item (Admin)
-- `DELETE /api/food/:id` - Delete food item (Admin)
-- `GET /api/food/:id` - Get food item details
+### User Routes (`/api/user`)
+- `GET /profile` - Get user profile
+- `PUT /profile` - Update user profile
+- `GET /reservations` - Get user reservations
+- `POST /forgot-password` - Request password reset
+- `POST /reset-password` - Reset password
+- `GET /admin/all-users` - Get all users (Admin only)
 
-### Reservations
-- `GET /api/slot` - Get available slots
-- `POST /api/slot` - Create reservation
-- `GET /api/slot/:id` - Get slot details
-- `PUT /api/slot/:id` - Update slot (Admin)
-- `DELETE /api/slot/:id` - Delete slot (Admin)
+### Slot Routes (`/api/slots`)
+- `GET /:slotNumber` - Get all slots for a time slot
+- `POST /:slotNumber/reserve` - Reserve a table
+- `DELETE /:slotNumber/unreserve/:number` - Unreserve a table
+- `POST /:slotNumber/admin-reserve` - Admin reserve a table
+- `POST /:slotNumber/add` - Add a new table (Admin)
+- `DELETE /:slotNumber/delete/:number` - Delete a table (Admin)
+- `PATCH /:slotNumber/toggle/:number` - Enable/disable table (Admin)
+- `GET /:slotNumber/available` - Get available tables
 
-### Invoices
-- `GET /api/invoice` - Get user invoices
-- `POST /api/invoice` - Create invoice (Admin)
-- `GET /api/invoice/:id` - Get invoice details
-- `PUT /api/invoice/:id` - Update invoice (Admin)
-- `DELETE /api/invoice/:id` - Delete invoice (Admin)
+### Food Routes (`/api/food`)
+- `GET /` - Get all food items
+- `GET /categories` - Get food categories
+- `POST /` - Add new food item (Admin)
+- `PUT /:id` - Update food item (Admin)
+- `DELETE /:id` - Delete food item (Admin)
 
-### Messaging
-- `GET /api/message` - Get messages
-- `POST /api/message` - Send message
-- `PUT /api/message/:id` - Update message
-- `DELETE /api/message/:id` - Delete message
+### Invoice Routes (`/api/invoice`)
+- `POST /` - Create new invoice
+- `GET /` - Get all invoices (Admin)
+- `GET /:invoiceId` - Get invoice by ID
+- `PUT /:invoiceId` - Update invoice (Admin)
+- `GET /user/:userId` - Get invoices by user
+- `PATCH /:invoiceId/status` - Update invoice status (Admin)
+- `POST /:invoiceId/payment` - Record payment (Admin)
+- `GET /download/:invoiceId` - Download invoice PDF
 
-## Socket.io Events
-
-### Client to Server
-- `joinRoom` - Join a chat room
-- `joinFoodRoom` - Join food updates room
-- `joinAdminMessageRoom` - Join admin messages room
-- `joinUserRoom` - Join user-specific room
-
-### Server to Client
-- Real-time message broadcasting
-- Food menu updates
-- Reservation status updates
+### Message Routes (`/api/messages`)
+- `GET /` - Get user messages
+- `POST /` - Send message to admin
+- `GET /admin` - Get all messages (Admin)
+- `POST /admin/reply` - Admin reply to message
 
 ## Database Models
 
 ### User
-- Personal information (name, email, phone)
-- Authentication data (password hash, OAuth tokens)
+- Personal information (name, email, contact)
+- Authentication data (password hash, JWT tokens)
 - Role (user/admin)
-- Profile completion status
-
-### Food
-- Name, description, category
-- Ingredients, preparation steps
-- Nutritional information
-- Price, availability
-- Image URL
+- Payment history
+- Reservation history
 
 ### Slot
-- Date, time, table number
+- Slot number (1-3 representing time slots)
+- Table number
+- Capacity
 - Reservation status
-- User association
-- Payment information
+- Reserved by (user reference)
+
+### Food
+- Name, description, price
+- Category
+- Image URL
+- Availability status
 
 ### Invoice
-- Order details, items, quantities
-- Total amount, payment status
-- User and admin associations
-- PDF generation data
+- User reference
+- Food items with quantities
+- Total amount, taxes, discounts
+- Payment status
+- Reservation details (if applicable)
 
 ### Message
-- Sender, receiver, content
-- Timestamp, read status
-- Room association
+- Sender/Receiver information
+- Message content
+- Timestamp
+- Read status
 
-## Environment Variables
+## Socket Events
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| PORT | Server port | No (defaults to 5000) |
-| MONGO_URI | MongoDB connection string | Yes |
-| SESSION_SECRET | Express session secret | Yes |
-| JWT_SECRET | JWT signing secret | Yes |
-| STRIPE_SECRET_KEY | Stripe secret key | Yes |
-| STRIPE_WEBHOOK_SECRET | Stripe webhook secret | Yes |
-| GOOGLE_CLIENT_ID | Google OAuth client ID | Yes (for OAuth) |
-| GOOGLE_CLIENT_SECRET | Google OAuth client secret | Yes (for OAuth) |
-| EMAIL_USER | Email service username | Yes (for notifications) |
-| EMAIL_PASS | Email service password | Yes (for notifications) |
+### Client to Server
+- `join-slot`: Join a slot room for real-time updates
+- `join-user`: Join user-specific room
+- `join-foodUpdates`: Join food updates room
+
+### Server to Client
+- `slotUpdated`: Table reservation status changes
+- `newReservation`: New reservation notification
+- `reservationRemoved`: Reservation cancellation
+- `tableAdded`: New table added
+- `tableDeleted`: Table removed
+- `foodUpdated`: Food menu changes
+
+## Security Features
+
+- **Password Hashing**: bcryptjs for secure password storage
+- **JWT Authentication**: Stateless authentication with expiration
+- **Role-based Access**: Admin and user role separation
+- **Input Validation**: Express-validator for request validation
+- **CORS Protection**: Configured CORS policies
+- **Rate Limiting**: Basic rate limiting on sensitive endpoints
+
+## Development
+
+### Project Structure
+```
+table-reservation-api/
+├── controllers/          # Route handlers
+├── models/              # MongoDB schemas
+├── routes/              # API routes
+├── middleware/          # Custom middleware
+├── utils/               # Utility functions
+├── config/              # Configuration files
+├── server.js            # Main server file
+├── passportConfig.js    # Passport authentication config
+└── package.json
+```
+
+### Available Scripts
+- `npm start` - Start production server
+- `npm run dev` - Start development server with nodemon
+- `npm test` - Run tests (when implemented)
+
+## Deployment
+
+1. Set up environment variables for production
+2. Configure MongoDB database
+3. Set up reverse proxy (nginx recommended)
+4. Configure SSL certificates
+5. Set up process manager (PM2 recommended)
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit changes: `git commit -m 'Add your feature'`
-4. Push to branch: `git push origin feature/your-feature`
-5. Create a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
 ## License
 
 This project is licensed under the ISC License.
+
+## Support
+
+For support, please contact the development team or create an issue in the repository.

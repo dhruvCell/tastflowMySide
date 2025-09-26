@@ -1,0 +1,1 @@
+- [x] Fixed Invoice.js condition to properly detect admin-assisted reservations

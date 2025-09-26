@@ -149,7 +149,10 @@ const Invoice = ({ invoiceId, user }) => {
           <h5>Reservation Details</h5>
           <p><strong>Table Reserved:</strong> Table {invoice.reservedTableInfo.tableNumber}</p>
           <p><strong>Reservation Slot:</strong> {invoice.reservedTableInfo.slotTime}</p>
-          <p><strong>Reservation Fee Deduction:</strong> ₹100 (included in the total amount)</p>
+          {invoice.reservedTableInfo.status && invoice.reservedTableInfo.status === "admin-assisted" ?
+            <p><strong>Note:</strong> This reservation was made with admin assistance.</p>
+        :
+          <p><strong>Reservation Fee Deduction:</strong> ₹100 (included in the total amount)</p>}
           <p style={{ fontStyle: "italic", color: "#666" }}>
             Thank you for choosing TastyFlow for your dining experience. Your reservation ensures a seamless and enjoyable time with us.
           </p>
