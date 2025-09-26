@@ -82,7 +82,7 @@ const sendReply = async (req, res) => {
       from: '"TastyFlow" <tastyflow01@gmail.com>',
       to: originalMessage.email,
       subject: `Re: Your Message (Ref: ${messageId.slice(-6)})`,
-      html:  `
+      html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -97,6 +97,7 @@ const sendReply = async (req, res) => {
                   max-width: 600px;
                   margin: 0 auto;
                   padding: 20px;
+                  background-color: #fafafa;
               }
               .header {
                   border-bottom: 1px solid #eaeaea;
@@ -107,22 +108,22 @@ const sendReply = async (req, res) => {
                   text-align: center;
                   margin-bottom: 20px;
               }
-              .logo img {
-                  max-height: 50px;
+              .logo h2 {
+                  color: #e74c3c;
+                  margin: 0;
+              }
+              .content-block, .response-block {
+                  padding: 15px;
+                  margin: 20px 0;
+                  border-radius: 0 4px 4px 0;
               }
               .content-block {
                   background-color: #f9f9f9;
-                  border-left: 4px solid #4a90e2;
-                  padding: 15px;
-                  margin: 20px 0;
-                  border-radius: 0 4px 4px 0;
+                  border-left: 4px solid #e74c3c;
               }
               .response-block {
-                  background-color: #f0f7ff;
-                  border-left: 4px solid #4a90e2;
-                  padding: 15px;
-                  margin: 20px 0;
-                  border-radius: 0 4px 4px 0;
+                  background-color: #fff4f4;
+                  border-left: 4px solid #e74c3c;
               }
               .meta {
                   font-size: 0.9em;
@@ -144,7 +145,7 @@ const sendReply = async (req, res) => {
               .button {
                   display: inline-block;
                   padding: 10px 20px;
-                  background-color: #4a90e2;
+                  background-color: #e74c3c;
                   color: white;
                   text-decoration: none;
                   border-radius: 4px;
@@ -155,15 +156,14 @@ const sendReply = async (req, res) => {
       <body>
           <div class="header">
               <div class="logo">
-                  <!-- Replace with your logo or company name -->
-                  <h2 style="color: #4a90e2; margin: 0;">Tastyflow</h2>
+                  <h2>TastyFlow</h2>
               </div>
               <h1 style="margin: 0; font-size: 1.5em;">Response to Your Message</h1>
           </div>
       
           <p>Dear ${originalMessage.firstName} ${originalMessage.lastName},</p>
       
-          <p>Thank you for contacting us. We appreciate you taking the time to share your feedback with us.</p>
+          <p>Thank you for reaching out to TastyFlow. We value your feedback and appreciate you taking the time to contact us.</p>
       
           <div class="content-block">
               <div class="meta">
@@ -180,26 +180,27 @@ const sendReply = async (req, res) => {
               <p>${replyContent}</p>
           </div>
       
-          <p>If you have any further questions or need additional assistance, please don't hesitate to reply to this email.</p>
+          <p>If you have any further questions or need additional assistance, please don't hesitate to reply to this email or contact our support team.</p>
       
           <div class="signature">
               <p>Best regards,</p>
               <p><strong>Customer Support</strong></p>
-              <p>Tastyflow</p>
+              <p>TastyFlow</p>
           </div>
       
           <div class="footer">
               <p>Reference ID: ${messageId}</p>
-              <p>© ${new Date().getFullYear()} Your Company. All rights reserved.</p>
+              <p>© ${new Date().getFullYear()} TastyFlow. All rights reserved.</p>
               <p>
-                  <a href="https://yourcompany.com" style="color: #4a90e2; text-decoration: none;">Website</a> | 
-                  <a href="https://yourcompany.com/contact" style="color: #4a90e2; text-decoration: none;">Contact Us</a>
+                  <a href="https://tastyflow.com" style="color: #e74c3c; text-decoration: none;">Website</a> | 
+                  <a href="https://tastyflow.com/contact" style="color: #e74c3c; text-decoration: none;">Contact Us</a>
               </p>
           </div>
       </body>
       </html>
-            `
+      `
     };
+    
 
     const newReply = {
       content: replyContent,

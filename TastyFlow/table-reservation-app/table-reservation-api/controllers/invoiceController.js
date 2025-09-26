@@ -589,7 +589,7 @@ const downloadInvoicePDF = async (req, res) => {
 };
 
 module.exports = {
-   createInvoice,
+  createInvoice,
   getAllInvoices,
   getInvoiceById,
   updateInvoice,
