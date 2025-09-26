@@ -25,6 +25,11 @@ function SlotTable(props) {
   const [tableToChange, setTableToChange] = useState(null);
   const [availableTables, setAvailableTables] = useState([]);
   const [selectedNewTable, setSelectedNewTable] = useState('');
+  const [showReserveModal, setShowReserveModal] = useState(false);
+  const [tableToReserve, setTableToReserve] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
   const socket = useSocket();
  const fetchTables = useCallback(async () => {
     try {
@@ -237,6 +242,55 @@ function SlotTable(props) {
     }
   };
 
+  const openReserveModal = async (table) => {
+    try {
+      setTableToReserve(table);
+      const response = await axios.get('http://localhost:5000/api/users/admin/all-users', {
+        headers: { 'auth-token': localStorage.getItem('token') }
+      });
+      setUsers(response.data);
+      setShowReserveModal(true);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      message.error('Error fetching users');
+    }
+  };
+
+  const reserveForUser = async () => {
+    if (!selectedUserId) {
+      message.error('Please select a user');
+      return;
+    }
+
+    try {
+      setLoadingTable(tableToReserve.number);
+      await axios.post(
+        `http://localhost:5000/api/slot/${slotNumber}/admin/reserve`,
+        { 
+          number: tableToReserve.number,
+          userId: selectedUserId 
+        },
+        { headers: { 'auth-token': localStorage.getItem('token') } }
+      );
+      message.success('Table reserved successfully for user');
+      setShowReserveModal(false);
+      setSelectedUserId('');
+      setSearchTerm('');
+      fetchTables();
+    } catch (error) {
+      console.error('Error reserving table:', error);
+      message.error(error.response?.data?.message || 'Error reserving table');
+    } finally {
+      setLoadingTable(null);
+    }
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.contact.includes(searchTerm)
+  );
+
   const sortedTables = [...tables].sort((a, b) => a.number - b.number);
 
   return (
@@ -315,6 +369,65 @@ function SlotTable(props) {
                   disabled={!selectedNewTable || loadingTable === tableToChange?.number}
                 >
                   {loadingTable === tableToChange?.number ? <CustomSpinner small /> : 'Change Table'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Reserve for User Modal */}
+        {showReserveModal && (
+          <div className="modal-overlay">
+            <div className="modal-container">
+              <div className="modal-header">
+                <h3>Reserve Table {tableToReserve?.number} for User</h3>
+              </div>
+              <div className="modal-body">
+                <p>Search and select a user to reserve this table:</p>
+                <input
+                  type="text"
+                  placeholder="Search users by name, email, or contact..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="user-search-input"
+                />
+                <div className="user-list">
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map(user => (
+                      <div
+                        key={user._id}
+                        className={`user-item ${selectedUserId === user._id ? 'selected' : ''}`}
+                        onClick={() => setSelectedUserId(user._id)}
+                      >
+                        <div className="user-info">
+                          <div className="user-name">{user.name}</div>
+                          <div className="user-email">{user.email}</div>
+                          <div className="user-contact">{user.contact}</div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="no-users">No users found</div>
+                  )}
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="modal-cancel-btn"
+                  onClick={() => {
+                    setShowReserveModal(false);
+                    setSelectedUserId('');
+                    setSearchTerm('');
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="modal-confirm-btn"
+                  onClick={reserveForUser}
+                  disabled={!selectedUserId || loadingTable === tableToReserve?.number}
+                >
+                  {loadingTable === tableToReserve?.number ? <CustomSpinner small /> : 'Reserve for User'}
                 </button>
               </div>
             </div>
@@ -414,6 +527,19 @@ function SlotTable(props) {
                     )}
                     
                     <div className='action-buttons'>
+                      {!table.reserved && !table.disabled && (
+                        <button
+                          onClick={() => openReserveModal(table)}
+                          className='reserve-button'
+                          disabled={loadingTable === table.number}
+                        >
+                          {loadingTable === table.number ? (
+                            <CustomSpinner small />
+                          ) : (
+                            'Reserve for User'
+                          )}
+                        </button>
+                      )}
                       {table.reserved && (
                         <>
                           <button

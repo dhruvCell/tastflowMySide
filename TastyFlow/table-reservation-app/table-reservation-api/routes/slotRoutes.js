@@ -8,6 +8,7 @@ router.get('/:slotNumber/available-tables', SlotController.getAvailableTables);
 router.post('/:slotNumber/reserve', fetchUser, SlotController.reserveSlot);
 router.post('/:slotNumber/unreserve', fetchUser, SlotController.unreserveSlot);
 router.post('/:slotNumber/admin/unreserve', fetchUser, SlotController.adminUnreserveSlot);
+router.post('/:slotNumber/admin/reserve', fetchUser, SlotController.adminReserveSlot);
 router.post('/:slotNumber/add', SlotController.addSlot);
 router.delete('/:slotNumber/delete', SlotController.deleteSlot);
 router.post('/:slotNumber/create-payment-intent', fetchUser, SlotController.createPaymentIntent);

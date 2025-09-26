@@ -151,10 +151,10 @@ const getUser = async (req, res) => {
     }
 };
 
-// Fetch all users
+// Fetch all users (excluding admins)
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find().select("-password"); // Exclude passwords
+        const users = await User.find({ role: { $ne: 'admin' } }).select("-password"); // Exclude passwords and admin users
         res.json(users);
     } catch (error) {
         console.error(error.message);

@@ -433,6 +433,83 @@ const getAvailableTables = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const adminReserveSlot = async (req, res) => {
+  try {
+    const { number, userId } = req.body;
+    const slotNumber = parseInt(req.params.slotNumber);
+
+    const slot = await Slot.findOne({ slotNumber, number });
+    if (!slot) return res.status(404).json({ message: "Slot not found" });
+    if (slot.reserved) return res.status(400).json({ message: "Slot is already reserved" });
+    if (slot.disabled) return res.status(400).json({ message: "Slot is currently disabled" });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    slot.reserved = true;
+    slot.reservedBy = userId;
+    await slot.save();
+
+    const paymentData = {
+      paymentIntentId: 'admin-assisted',
+      amount: 100,
+      currency: "inr",
+      status: "admin-assisted",
+      tableNumber: number,
+      slotTime: getSlotTime(slotNumber),
+      reservationId: slot._id,
+      deducted: false
+    };
+
+    user.payments.push(paymentData);
+    await user.save();
+
+    // Send email
+    const mailOptions = {
+      from: "tastyflow01@gmail.com",
+      to: user.email,
+      subject: "Slot Reservation Confirmation - Admin Assisted",
+      text: `Your reservation for Table ${slot.number} (${getSlotTime(slotNumber)}) has been confirmed by our admin. Thank you!`,
+    };
+    transporter.sendMail(mailOptions);
+
+    const populatedSlot = await Slot.findById(slot._id).populate({
+      path: 'reservedBy',
+      select: 'name contact'
+    });
+
+    const io = req.app.get('io');
+    io.to(`slot_${slotNumber}`).emit('slotUpdated', { 
+      action: 'reserved', 
+      slotNumber, 
+      tableNumber: number,
+      reservedBy: {
+        _id: user._id,
+        name: user.name,
+        contact: user.contact
+      },
+      slot: populatedSlot
+    });
+
+    // Emit new reservation to user's room
+    io.to(`user_${userId}`).emit('newReservation', {
+      reservation: {
+        reservationId: slot._id,
+        tableNumber: number,
+        slotTime: getSlotTime(slotNumber)
+      }
+    });
+
+    res.status(200).json({ 
+      message: "Slot reserved successfully by admin", 
+      slot: populatedSlot 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllSlots,
   reserveSlot,
@@ -443,5 +520,6 @@ module.exports = {
   createPaymentIntent,
   toggleTableStatus,
   changeTable,
-  getAvailableTables
+  getAvailableTables,
+  adminReserveSlot
 };

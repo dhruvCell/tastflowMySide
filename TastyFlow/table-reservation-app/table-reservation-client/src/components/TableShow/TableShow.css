@@ -432,6 +432,98 @@
   color: var(--text-primary);
 }
 
+/* Reserve Button */
+.reserve-button {
+  background-color: var(--success);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.reserve-button:hover:not(:disabled) {
+  background-color: #27ae60;
+}
+
+.reserve-button:disabled {
+  background-color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+/* User Search Input */
+.user-search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background-color: var(--bg-darker);
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.user-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* User List */
+.user-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background-color: var(--bg-darker);
+}
+
+.user-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-dark);
+  transition: background-color 0.2s ease;
+}
+
+.user-item:hover {
+  background-color: var(--bg-lighter);
+}
+
+.user-item.selected {
+  background-color: var(--primary);
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-email {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.user-contact {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.no-users {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .table-show {
