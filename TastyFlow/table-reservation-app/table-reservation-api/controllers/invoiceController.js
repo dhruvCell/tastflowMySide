@@ -43,11 +43,11 @@ const createInvoice = async (req, res) => {
       const payment = user.payments.find(
         (p) =>
           p.reservationId.toString() === reservationId &&
-          p.status === "succeeded" &&
           !p.deducted
       );
 
-      if (payment && totalAmount >= 100) {
+      // Only deduct ₹100 if payment was made by user (not admin-assisted)
+      if (payment && payment.status === "succeeded" && totalAmount >= 100) {
         finalTotalAmount -= 100;
         payment.deducted = true;
         await user.save();
@@ -60,9 +60,34 @@ const createInvoice = async (req, res) => {
             date: reservedSlot.date,
           };
 
-          slotToUnreserve = await Slot.findOne({ 
+          slotToUnreserve = await Slot.findOne({
             slotNumber: reservedSlot.slotNumber,
-            number: reservedSlot.tableNumber 
+            number: reservedSlot.tableNumber
+          });
+
+          if (slotToUnreserve) {
+            slotToUnreserve.reserved = false;
+            slotToUnreserve.reservedBy = null;
+            await slotToUnreserve.save();
+          }
+        }
+      }
+      // For admin-assisted reservations, still mark as deducted but don't reduce the amount
+      else if (payment && payment.status === "admin-assisted") {
+        payment.deducted = true;
+        await user.save();
+
+        const reservedSlot = await findReservedSlot(reservationId);
+        if (reservedSlot) {
+          reservedTableInfo = {
+            tableNumber: reservedSlot.tableNumber,
+            slotTime: getSlotTime(reservedSlot.slotNumber),
+            date: reservedSlot.date,
+          };
+
+          slotToUnreserve = await Slot.findOne({
+            slotNumber: reservedSlot.slotNumber,
+            number: reservedSlot.tableNumber
           });
 
           if (slotToUnreserve) {

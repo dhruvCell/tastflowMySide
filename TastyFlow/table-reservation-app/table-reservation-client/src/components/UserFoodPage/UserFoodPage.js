@@ -52,11 +52,11 @@ const UserFoodPage = () => {
     };
 
     const updateReservations = (userData) => {
-      const succeededPayments = userData.payments?.filter(
-        payment => payment.status === "succeeded" && !payment.deducted
+      const availablePayments = userData.payments?.filter(
+        payment => (payment.status === "succeeded" || payment.status === "admin-assisted") && !payment.deducted
       ) || [];
-      
-      setReservations(succeededPayments.map(payment => ({
+  
+      setReservations(availablePayments.map(payment => ({
         reservationId: payment.reservationId,
         tableNumber: payment.tableNumber,
         slotTime: payment.slotTime,

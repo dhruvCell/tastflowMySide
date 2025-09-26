@@ -588,3 +588,87 @@
     margin-bottom: 0.5rem;
   }
 }
+
+/* Reserve Form Styles */
+.ufp-reserve-section {
+  margin-bottom: 0;
+}
+
+.ufp-reserve-section h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--ufp-primary);
+  font-size: 1.2rem;
+}
+
+.ufp-reserve-toggle-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--ufp-secondary);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 1rem;
+}
+
+.ufp-reserve-toggle-btn:hover {
+  background-color: #2a8fdd;
+}
+
+.ufp-reserve-form {
+  background-color: var(--ufp-bg-darker);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ufp-form-group {
+  margin-bottom: 1rem;
+}
+
+.ufp-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--ufp-text-secondary);
+  font-weight: 500;
+}
+
+.ufp-form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--ufp-border-dark);
+  background-color: var(--ufp-bg-lighter);
+  color: var(--ufp-text-primary);
+  font-size: 0.9rem;
+}
+
+.ufp-form-group select:disabled {
+  background-color: var(--ufp-bg-darker);
+  color: var(--ufp-text-tertiary);
+  cursor: not-allowed;
+}
+
+.ufp-reserve-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--ufp-success);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ufp-reserve-btn:hover:not(:disabled) {
+  background-color: #25a35a;
+}
+
+.ufp-reserve-btn:disabled {
+  background-color: var(--ufp-bg-lighter);
+  color: var(--ufp-text-tertiary);
+  cursor: not-allowed;
+}
