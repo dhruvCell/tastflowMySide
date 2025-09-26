@@ -13,8 +13,29 @@ const OAuthCallback = (props) => {
 
         if (token) {
           localStorage.setItem('token', token);
-          props.showAlert("Logged In Successfully with Google", "success");
-          navigate("/");
+          // Fetch user details to check if contact is provided
+          const response = await fetch("http://localhost:5000/api/users/getuser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": token
+            }
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+            if (!user.contact || user.contact.trim() === '') {
+              // Contact not provided, redirect to complete profile
+              props.showAlert("Please complete your profile", "info");
+              navigate("/complete-profile");
+            } else {
+              props.showAlert("Logged In Successfully with Google", "success");
+              navigate("/");
+            }
+          } else {
+            props.showAlert("OAuth login failed", "danger");
+            navigate("/login");
+          }
         } else {
           // If no token in URL, check if user is authenticated via session
           const existingToken = localStorage.getItem('token');
@@ -29,8 +50,14 @@ const OAuthCallback = (props) => {
 
             if (response.ok) {
               const user = await response.json();
-              // Don't show success alert here to avoid double notification
-              navigate("/");
+              if (!user.contact || user.contact.trim() === '') {
+                // Contact not provided, redirect to complete profile
+                props.showAlert("Please complete your profile", "info");
+                navigate("/complete-profile");
+              } else {
+                // Don't show success alert here to avoid double notification
+                navigate("/");
+              }
             } else {
               props.showAlert("OAuth login failed", "danger");
               navigate("/login");

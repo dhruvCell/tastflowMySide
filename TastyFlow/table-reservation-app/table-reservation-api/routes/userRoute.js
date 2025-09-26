@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, signupOtpSend, signupOtpVerify, getAllUsers, getUserId, addFoodToUser, sendInvoice, googleAuth } = require('../controllers/userController');
+const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, signupOtpSend, signupOtpVerify, getAllUsers, getUserId, addFoodToUser, sendInvoice, googleAuth, updateContact } = require('../controllers/userController');
 const fetchUser = require('../middleware/fetchUser');
 const passport = require('passport');
 
@@ -58,6 +58,9 @@ router.post("/admin/create-user", [
   createUser); 
 
 router.post('/send-invoice/:invoiceId', sendInvoice);
+
+// Update Contact
+router.put('/update-contact', fetchUser, updateContact);
 
 // Google OAuth routes
 router.get('/auth/google',

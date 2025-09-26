@@ -468,6 +468,24 @@ const addFoodToUser = async (req, res) => {
   
   
 
+const updateContact = async (req, res) => {
+    try {
+        let userId = req.user.id;
+        const { contact } = req.body;
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: { contact: contact } },
+            { new: true }
+        ).select("-password");
+
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server Error");
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -482,4 +500,5 @@ module.exports = {
     addFoodToUser,
     sendInvoice,
     googleAuth,
+    updateContact,
 };
