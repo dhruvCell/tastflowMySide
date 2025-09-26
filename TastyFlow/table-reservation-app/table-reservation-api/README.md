@@ -67,7 +67,6 @@ A robust Node.js/Express backend API for the TastyFlow table reservation and foo
 
    # Stripe
    STRIPE_SECRET_KEY=your_stripe_secret_key
-   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 
    # Google OAuth
    GOOGLE_CLIENT_ID=your_google_client_id

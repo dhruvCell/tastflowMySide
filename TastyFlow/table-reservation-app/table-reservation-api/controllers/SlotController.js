@@ -16,9 +16,9 @@ const getSlotTime = (slotNumber) => {
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'tastyflow01@gmail.com',
-    pass: 'npgughkbjtivvxrc',
-  },
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD
+}
 });
 
 // Get all slots for a specific slot number

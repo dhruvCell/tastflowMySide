@@ -203,8 +203,8 @@ const forgotPassword = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'tastyflow01@gmail.com',
-                pass: 'npgughkbjtivvxrc'
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
@@ -333,8 +333,8 @@ const signupOtpSend = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'tastyflow01@gmail.com',
-                pass: 'npgughkbjtivvxrc'
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
@@ -484,9 +484,9 @@ const addFoodToUser = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'tastyflow01@gmail.com',
-                pass: 'npgughkbjtivvxrc', // Use a secure app password
-            },
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
         });
 
         // Send the email
