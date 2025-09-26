@@ -14,11 +14,24 @@ const { generateInvoiceEmailHTML } = require('../utils/emailTemplates');
 const googleAuth = async (req, res) => {
     try {
         const user = req.user; // User from Passport
-        const data = {
-            user: {
-                id: user.id,
-            }
-        };
+        let data;
+        if (user.isTemp) {
+            // Temporary user, store profile info in token
+            data = {
+                tempUser: {
+                    googleId: user.googleId,
+                    name: user.name,
+                    email: user.email,
+                }
+            };
+        } else {
+            // Existing user
+            data = {
+                user: {
+                    id: user.id,
+                }
+            };
+        }
         const authtoken = jwt.sign(data, process.env.JWT_SECRET);
         res.redirect(`http://localhost:3000/auth/callback?token=${authtoken}`);
     } catch (error) {
@@ -109,8 +122,28 @@ const loginUser = async (req, res) => {
 // Get User Details
 const getUser = async (req, res) => {
     try {
-        let userId = req.user.id;
-        const user = await User.findById(userId).select("-password");
+        let user;
+        if (req.user.id) {
+            // Existing user
+            user = await User.findById(req.user.id).select("-password");
+        } else if (req.user.googleId) {
+            // Temp user from OAuth
+            user = {
+                _id: null,
+                name: req.user.name,
+                email: req.user.email,
+                googleId: req.user.googleId,
+                contact: '', // No contact yet
+                // Add other fields as needed
+            };
+        } else {
+            return res.status(400).json({ error: "Invalid user data" });
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         res.send(user);
     } catch (error) {
         console.error(error.message);
@@ -470,16 +503,38 @@ const addFoodToUser = async (req, res) => {
 
 const updateContact = async (req, res) => {
     try {
-        let userId = req.user.id;
         const { contact } = req.body;
 
-        const user = await User.findByIdAndUpdate(
-            userId,
-            { $set: { contact: contact } },
-            { new: true }
-        ).select("-password");
+        let user;
+        if (req.user.id) {
+            // Existing user, update contact
+            user = await User.findByIdAndUpdate(
+                req.user.id,
+                { $set: { contact: contact } },
+                { new: true }
+            ).select("-password");
+        } else if (req.user.googleId) {
+            // Temp user from OAuth, create new user
+            user = new User({
+                googleId: req.user.googleId,
+                name: req.user.name,
+                email: req.user.email,
+                contact: contact,
+            });
+            await user.save();
+        } else {
+            return res.status(400).json({ error: "Invalid user data" });
+        }
 
-        res.json({ success: true, user });
+        // Generate new token with user id
+        const data = {
+            user: {
+                id: user.id,
+            }
+        };
+        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+
+        res.json({ success: true, user, authtoken });
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal server Error");

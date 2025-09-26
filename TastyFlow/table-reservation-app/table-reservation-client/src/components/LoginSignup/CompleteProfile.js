@@ -26,6 +26,10 @@ const CompleteProfile = (props) => {
       const json = await response.json();
 
       if (response.ok) {
+        // Update token in localStorage with the new token
+        if (json.authtoken) {
+          localStorage.setItem('token', json.authtoken);
+        }
         props.showAlert('Profile updated successfully!', 'success');
         navigate('/');
       } else {
@@ -44,9 +48,6 @@ const CompleteProfile = (props) => {
       <div className="signup-image-container">
         <div className="signup-image-overlay"></div>
         <div className="signup-restaurant-quote">
-          <div className='lgn-logo-container'>
-                    <img src={logo} alt="TastyFlow" className='lgn-logo-image' />
-          </div>
           <h2>Complete Your Profile</h2>
           <p>Just one more step to get started with your dining experience.</p>
           <div className="signup-benefits-list">

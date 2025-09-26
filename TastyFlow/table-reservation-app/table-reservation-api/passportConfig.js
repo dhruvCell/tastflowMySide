@@ -23,12 +23,15 @@ async (accessToken, refreshToken, profile, done) => {
         return done(error, null);
       }
 
-      user = new User({
+      // Don't create user yet, just pass profile info
+      // User will be created when contact is provided
+      const tempUser = {
         googleId: profile.id,
         name: profile.displayName,
         email: profile.emails[0].value,
-      });
-      await user.save();
+        isTemp: true // Flag to indicate this is temporary
+      };
+      return done(null, tempUser);
     }
     return done(null, user);
   } catch (err) {
