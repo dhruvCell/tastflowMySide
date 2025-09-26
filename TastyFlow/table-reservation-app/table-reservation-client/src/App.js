@@ -42,14 +42,8 @@ import Menu_Page from './components/Menu Page/Menu_Page';
 import { SocketProvider } from './context/SocketContext';
 import { FoodProvider } from './context/FoodContext';
 import { MessageProvider } from './context/MessageContext';
-import { Howl } from 'howler';
 
-
-const clickOption = new Howl({ src: ['/sounds/click.mp3'] });
-
-
-
-const stripePromise = loadStripe('pk_test_51PM6qtRwUTaEqzUvS6OJGM3YihHTBzBe1X4lPiFacZgFvyHU6E27K7n9qzkmzJoi2V0JH66T7fCpL9MgQCVYerTD00lU9wNdOf');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY);
 
 function PrivateRoute({ element, ...rest }) {
   const token = localStorage.getItem("token");
