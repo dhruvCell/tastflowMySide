@@ -195,7 +195,11 @@ const generateInvoiceEmailHTML = (invoice, user) => {
                 <h5>Reservation Details</h5>
                 <p><strong>Table No:</strong> ${invoice.reservedTableInfo.tableNumber}</p>
                 <p><strong>Reservation Slot:</strong> ${invoice.reservedTableInfo.slotTime}</p>
-                <p><strong>Reservation Fee:</strong> ₹100 (included in total)</p>
+                ${
+              invoice.reservedTableInfo.status === "admin-assisted" ?
+              `<p><strong>Note:</strong> This reservation was made with admin assistance.</p>` :
+              `<p><strong>Reservation Fee Deduction:</strong> ₹100 (included in the total amount)</p>`
+              }
               </div>
             `
                 : ''
