@@ -256,6 +256,34 @@
   opacity: 0.9;
 }
 
+.invoice-list-pdf-btn {
+  background: var(--success);
+  color: white;
+  position: relative;
+  color: 10px;
+  overflow: hidden;
+  font-size: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--success);
+  border-radius: var(--radius-sm);
+}
+
+.invoice-list-pdf-btn:hover {
+  background: #25a35a;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.invoice-list-pdf-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.invoice-list-pdf-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /* Add these styles to your existing CSS */
 .cancel-modal-content {
   padding: 15px;

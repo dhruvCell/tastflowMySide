@@ -178,10 +178,28 @@
 .user-invoices-pdf-btn {
   background: var(--success);
   color: white;
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--success);
+  border-radius: var(--radius-sm);
 }
 
 .user-invoices-pdf-btn:hover {
   background: #25a35a;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.user-invoices-pdf-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-invoices-pdf-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .user-invoices-empty-state {
