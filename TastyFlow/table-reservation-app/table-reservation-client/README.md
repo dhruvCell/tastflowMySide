@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# TastyFlow - Table Reservation Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive React frontend for the TastyFlow table reservation and food ordering system. This application allows users to browse menus, make table reservations, place food orders, and manage their accounts, while providing administrators with comprehensive management tools.
+
+## Features
+
+### User Features
+- **User Authentication**: Login, signup, OAuth (Google), password reset
+- **Table Reservation**: Browse available slots, reserve tables with date/time selection
+- **Food Ordering**: Browse menu, view food details, place orders
+- **Invoice Management**: View order history, download/print invoices
+- **Real-time Messaging**: Chat with administrators
+- **Profile Management**: Update personal information and preferences
+- **Reviews & Ratings**: Rate and review food items
+
+### Admin Features
+- **Dashboard**: Overview of reservations, orders, and users
+- **User Management**: View and manage all users
+- **Food Management**: Add, edit, delete menu items
+- **Reservation Management**: View and manage table reservations
+- **Invoice Management**: Generate and manage invoices
+- **Analytics**: View graphs and statistics
+- **Real-time Communication**: Respond to user messages
+
+### Technical Features
+- **Responsive Design**: Mobile-first approach with Bootstrap and custom CSS
+- **Real-time Updates**: Socket.io integration for live messaging and notifications
+- **Payment Integration**: Stripe payment processing for reservations
+- **File Uploads**: Image uploads for food items and user profiles
+- **Data Visualization**: Charts and graphs using Recharts
+- **Sound Effects**: Audio feedback for user interactions
+
+## Tech Stack
+
+- **Frontend Framework**: React 18
+- **Routing**: React Router DOM
+- **State Management**: React Context API
+- **UI Components**: Ant Design, React Bootstrap
+- **Styling**: CSS3, Styled Components, GSAP animations
+- **HTTP Client**: Axios
+- **Real-time Communication**: Socket.io Client
+- **Payment Processing**: Stripe Elements
+- **Date Handling**: date-fns
+- **Charts**: Recharts
+- **Icons**: FontAwesome, React Icons
+- **Audio**: Howler.js
+- **Build Tool**: Create React App
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- Backend API server running (see API README)
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd table-reservation-app/table-reservation-client
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the root directory and add the following environment variables:
+   ```env
+   REACT_APP_API_BASE_URL=http://localhost:5000
+   REACT_APP_STRIPE_CLIENT_KEY=your_stripe_publishable_key
+   ```
+
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+
+   The application will be available at `http://localhost:3000`
 
 ## Available Scripts
 
-In the project directory, you can run:
+- `npm start` - Runs the app in development mode
+- `npm run build` - Builds the app for production
+- `npm test` - Launches the test runner
+- `npm run eject` - Ejects from Create React App (irreversible)
 
-### `npm start`
+## Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+src/
+├── components/          # Reusable UI components
+│   ├── LoginSignup/     # Authentication components
+│   ├── Navbar/          # Navigation bar
+│   ├── Sidebar/         # Admin sidebar
+│   ├── TableComponent/  # Reservation interface
+│   ├── Invoice/         # Invoice display
+│   └── ...
+├── context/             # React Context providers
+│   ├── FoodContext.js   # Food-related state
+│   ├── MessageContext.js # Messaging state
+│   └── SocketContext.js # Socket.io connection
+├── routes/              # Route definitions
+├── utils/               # Utility functions
+├── assets/              # Static assets
+└── App.js               # Main application component
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Key Components
 
-### `npm test`
+- **App.js**: Main component with routing and providers
+- **AppRoutes.js**: Centralized route definitions
+- **UserPanel**: Landing page for authenticated users
+- **Admin**: Admin dashboard with management tools
+- **TableComponent**: Table reservation interface with Stripe integration
+- **Invoice**: Invoice generation and display
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## API Integration
 
-### `npm run build`
+The frontend communicates with the backend API at `http://localhost:5000` for:
+- User authentication and management
+- Food menu data
+- Reservation slots
+- Order processing
+- Invoice generation
+- Real-time messaging
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environment Variables
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Variable | Description | Required |
+|----------|-------------|----------|
+| REACT_APP_STRIPE_CLIENT_KEY | Stripe publishable key | Yes |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contributing
 
-### `npm run eject`
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -m 'Add your feature'`
+4. Push to branch: `git push origin feature/your-feature`
+5. Create a Pull Request
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## License
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the ISC License.
