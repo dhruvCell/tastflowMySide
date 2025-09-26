@@ -33,7 +33,6 @@ A robust Node.js/Express backend API for the TastyFlow table reservation and foo
 - **Payments**: Stripe
 - **File Uploads**: Multer
 - **Email**: Nodemailer
-- **SMS**: Twilio & Vonage
 - **Scheduling**: Node-cron
 - **Validation**: Express-validator
 - **Security**: bcryptjs, CORS, express-session
@@ -77,11 +76,6 @@ A robust Node.js/Express backend API for the TastyFlow table reservation and foo
    # Email (Nodemailer)
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASS=your_email_password
-
-   # SMS (Twilio)
-   TWILIO_ACCOUNT_SID=your_twilio_account_sid
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   TWILIO_PHONE_NUMBER=your_twilio_phone_number
    ```
 
 4. Start the development server:
@@ -225,9 +219,6 @@ A robust Node.js/Express backend API for the TastyFlow table reservation and foo
 | GOOGLE_CLIENT_SECRET | Google OAuth client secret | Yes (for OAuth) |
 | EMAIL_USER | Email service username | Yes (for notifications) |
 | EMAIL_PASS | Email service password | Yes (for notifications) |
-| TWILIO_ACCOUNT_SID | Twilio account SID | Yes (for SMS) |
-| TWILIO_AUTH_TOKEN | Twilio auth token | Yes (for SMS) |
-| TWILIO_PHONE_NUMBER | Twilio phone number | Yes (for SMS) |
 
 ## Contributing
 
