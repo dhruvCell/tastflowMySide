@@ -119,7 +119,7 @@ function App() {
     getUserDetails();
   }, []);
 
-  const hideNavbarRoutes = ['/login', '/signup', '/forgot-password', '/reset-password'];
+  const hideNavbarRoutes = ['/login', '/signup', '/forgot-password', '/reset-password', '/complete-profile'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
