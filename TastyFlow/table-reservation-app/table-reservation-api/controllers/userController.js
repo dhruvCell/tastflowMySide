@@ -265,6 +265,112 @@ const resetPassword = async (req, res) => {
     }
 };
 
+// Signup OTP Send
+const signupOtpSend = async (req, res) => {
+    const { name, email, password, contact } = req.body;
+
+    // Validate email is Gmail
+    if (!email.endsWith('@gmail.com')) {
+        return res.status(400).json({ message: 'Only Gmail addresses are allowed for signup' });
+    }
+
+    try {
+        // Check if user already exists
+        let user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ message: 'User with this email already exists' });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const now = new Date();
+        const expiryDate = new Date(now.getTime() + 60000); // 1 minute
+        const formattedExpiry = expiryDate.toTimeString().slice(0, 5);
+
+        // Create temporary user entry with OTP
+        user = new User({
+            name,
+            email,
+            password: 'temp', // Temporary password
+            contact,
+            otp,
+            otpExpiry: formattedExpiry
+        });
+        await user.save();
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'tastyflow01@gmail.com',
+                pass: 'npgughkbjtivvxrc'
+            }
+        });
+
+        const mailOptions = {
+            from: 'tastyflow01@gmail.com',
+            to: email,
+            subject: 'Verify your email for TastyFlow Signup',
+            text: `Your OTP for signup is ${otp}. It expires in 1 minute.`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).json({ message: 'Error sending OTP email' });
+            } else {
+                res.status(200).json({ message: 'OTP sent successfully to your Gmail' });
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// Signup OTP Verify
+const signupOtpVerify = async (req, res) => {
+    const { email, otp, name, password, contact } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found. Please start signup again.' });
+        }
+
+        if (user.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }
+
+        const now = new Date();
+        if (user.otpExpiry < now) {
+            user.otp = undefined;
+            user.otpExpiry = undefined;
+            await user.save();
+            return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+        }
+
+        // Hash password and create user
+        const salt = await bcrypt.genSalt(10);
+        const secPass = await bcrypt.hash(password, salt);
+
+        user.password = secPass;
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        await user.save();
+
+        const data = {
+            user: {
+                id: user.id,
+            }
+        };
+
+        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+        res.json({ success: true, authtoken });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server Error");
+    }
+};
+
 const addFoodToUser = async (req, res) => {
     const { userId } = req.params;  // User ID from params
     const { foods } = req.body;     // Array of food items and their quantities
@@ -369,6 +475,8 @@ module.exports = {
     forgotPassword,
     verifyOtp,
     resetPassword,
+    signupOtpSend,
+    signupOtpVerify,
     getAllUsers,
     getUserId,
     addFoodToUser,

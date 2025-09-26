@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, getAllUsers, getUserId, addFoodToUser, sendInvoice, googleAuth } = require('../controllers/userController');
+const { createUser, loginUser, getUser, forgotPassword, verifyOtp, resetPassword, signupOtpSend, signupOtpVerify, getAllUsers, getUserId, addFoodToUser, sendInvoice, googleAuth } = require('../controllers/userController');
 const fetchUser = require('../middleware/fetchUser');
 const passport = require('passport');
 
@@ -34,6 +34,12 @@ router.post('/verify-otp', verifyOtp);
 
 // Reset Password
 router.post('/reset-password', resetPassword);
+
+// Signup OTP Send
+router.post('/signup-otp-send', signupOtpSend);
+
+// Signup OTP Verify
+router.post('/signup-otp-verify', signupOtpVerify);
 
 // Get all users
 router.get('/admin/all-users', getAllUsers);

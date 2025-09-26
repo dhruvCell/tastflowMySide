@@ -221,6 +221,30 @@
     text-decoration: underline;
 }
 
+.signup-back-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: transparent;
+    color: #ff6b61;
+    border: 1px solid #ff6b61;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.signup-back-btn:hover {
+    background-color: #ff6b61;
+    color: white;
+}
+
+.signup-back-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* Error styles */
 .signup-form-input.signup-error {
     border-color: #ff3860;
