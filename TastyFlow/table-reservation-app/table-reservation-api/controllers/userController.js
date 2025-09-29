@@ -222,7 +222,7 @@ const forgotPassword = async (req, res) => {
                   </span>
                 </div>
                 
-                <p>This OTP is valid for the next <strong>10 minutes</strong>. Please do not share it with anyone for your account’s security.</p>
+                <p>This OTP is valid for the next <strong>2 minutes</strong>. Please do not share it with anyone for your account’s security.</p>
                 
                 <p>If you did not request a password reset, kindly ignore this email. Your account will remain secure.</p>
                 
@@ -319,11 +319,6 @@ const resetPassword = async (req, res) => {
 // Signup OTP Send
 const signupOtpSend = async (req, res) => {
     const { name, email, password, contact } = req.body;
-
-    // Validate email is Gmail
-    if (!email.endsWith('@gmail.com')) {
-        return res.status(400).json({ message: 'Only Gmail addresses are allowed for signup' });
-    }
 
     try {
         // Check if user already exists
